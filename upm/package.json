@@ -1,0 +1,18 @@
+{
+  "name": "com.tencent.puerts.ts-loader",
+  "displayName": "Puerts TS loader",
+  "version": "1.0.0-pre.0",
+  "description": "use typescript with more joy for PuerTS.",
+  "keywords": [
+    "Script"
+  ],
+  "author": {
+    "name": "zombieyang",
+    "email": "zombieyang@tencent.com",
+    "url": "https://github.com/zombieyang"
+  },
+  "category": "Libraries",
+  "dependencies": {
+    "com.tencent.puerts.core": "1.4.0"
+  }
+}
