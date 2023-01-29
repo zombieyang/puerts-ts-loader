@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
 using System;
@@ -6,10 +7,13 @@ using System.Reflection;
 
 namespace Puerts
 {
-    public class TypescriptAsset : ScriptableObject {
+    public class TypescriptAsset : ScriptableObject 
+    {
         protected string _specifier = null;
-        public string specifier {
-            get {
+        public string specifier 
+        {
+            get 
+            {
                 if (_specifier == null) _specifier = TSDirectoryCollector.GetSpecifierByAssetPath(Path.GetFullPath(AssetDatabase.GetAssetPath(this)));
                 return _specifier;
             }
@@ -23,7 +27,7 @@ namespace Puerts
             string pathToCurrentFolder = obj.ToString();
             return pathToCurrentFolder;
         }
-
+        
         [MenuItem("Assets/PuerTS/Create Typescript File(ESM)")]
         public static void CreateMTS()
         {
@@ -60,3 +64,4 @@ export default 'hello world'
         }
     }
 }
+#endif

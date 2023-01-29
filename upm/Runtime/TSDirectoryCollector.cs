@@ -21,7 +21,7 @@ namespace Puerts
             foreach (var tsConfigPath in tsConfigList)
             {
                 var absPath = Path.GetFullPath(tsConfigPath);
-                AddTSCompiler(System.IO.Path.GetDirectoryName(absPath));
+                AddTSCompiler(Path.GetDirectoryName(absPath));
             } 
         }
 
@@ -34,8 +34,8 @@ namespace Puerts
         {
             foreach (KeyValuePair<string, TSCompiler> item in tsCompilers)
             {
-                string tryPath = System.IO.Path.Combine(item.Key, specifier);
-                if (System.IO.File.Exists(tryPath)) {
+                string tryPath = Path.Combine(item.Key, specifier);
+                if (File.Exists(tryPath)) {
                     return tryPath;
                 }
             }
@@ -48,7 +48,7 @@ namespace Puerts
             {
                 if (absPath.Contains(item.Key)) {
                     return item.Value.EmitTSFile(absPath);
-                }
+                } 
             }
             throw new Exception("emit tsfile " + absPath + " failed: not found");
         }
@@ -62,6 +62,20 @@ namespace Puerts
                 }
             }
             return "";
+        }
+        public static TypescriptAsset GetAssetBySpecifier(string specifier)
+        {
+            if (string.IsNullOrEmpty(specifier)) return null;
+
+            foreach (KeyValuePair<string, TSCompiler> item in tsCompilers)
+            {
+                string tryPath = Path.Combine(item.Key, specifier);
+                if (File.Exists(tryPath)) {
+                    return (TypescriptAsset)AssetDatabase
+                        .LoadAssetAtPath(Path.GetRelativePath(Path.Combine(UnityEngine.Application.dataPath, ".."), tryPath), typeof(TypescriptAsset));
+                }
+            }
+            return null;
         }
     }
 }

@@ -5,7 +5,9 @@
         "com.tencent.puerts.core",
         "com.tencent.puerts.ts-loader"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
