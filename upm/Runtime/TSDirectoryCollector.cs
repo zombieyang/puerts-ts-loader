@@ -81,7 +81,6 @@ namespace Puerts
                         File.ReadAllText(Path.Combine(tsRoot, "tsconfig.json")),
                         CSArrToJSArr(tsCompilers.Keys.Where(key => key != tsRoot).ToArray())
                     );
-                    UnityEngine.Debug.Log(newTSConfig);
                     File.WriteAllText(Path.Combine(tsRoot, "tsconfig.json"), newTSConfig);
                 }
             }
