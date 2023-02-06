@@ -9,13 +9,13 @@ namespace Puerts
 {
     public class TypescriptAsset : ScriptableObject 
     {
-        protected string _specifier = null;
         public string specifier 
         {
             get 
             {
-                if (_specifier == null) _specifier = TSDirectoryCollector.GetSpecifierByAssetPath(Path.GetFullPath(AssetDatabase.GetAssetPath(this)));
-                return _specifier;
+                var specifier = TSDirectoryCollector.GetSpecifierByAssetPath(Path.GetFullPath(AssetDatabase.GetAssetPath(this)));
+                if (specifier.EndsWith("ts")) specifier = specifier.Substring(0, specifier.Length - 2) + "js";
+                return specifier;
             }
         }
 

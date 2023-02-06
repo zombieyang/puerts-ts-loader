@@ -32,17 +32,8 @@ namespace Puerts
         public virtual string Resolve(string specifier)
         {
 #if UNITY_EDITOR
-            string tryPath = TSDirectoryCollector.TryGetFullTSPath(specifier);
-            if (tryPath != null) return tryPath;
-
-            if (specifier.EndsWith("js"))
-            {
-                tryPath = TSDirectoryCollector.TryGetFullTSPath(specifier.Substring(0, specifier.Length - 2) + "ts");
-                if (tryPath != null) return tryPath;
-            }
-
-            tryPath = TSDirectoryCollector.TryGetFullTSPath(specifier + ".ts");
-            if (tryPath != null) return tryPath;
+            var fullPath = TSDirectoryCollector.TryGetFullTSPath(specifier);
+            if (fullPath != null) return fullPath;
 #else
             if (specifier.EndsWith(".ts") || specifier.EndsWith(".mts"))
             {
@@ -56,7 +47,7 @@ namespace Puerts
         public bool FileExists(string filename)
         {
             var resolveResult = Resolve(filename);
-            return resolveResult != null && resolveResult != "";
+            return !string.IsNullOrEmpty(resolveResult);
         }
   
         public virtual string ReadFile(string specifier, out string debugpath)

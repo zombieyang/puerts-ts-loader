@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from "fs";
+import { existsSync, readFileSync, statSync } from "fs";
 import { glob } from "glob";
 import { join, normalize } from "path";
 import ts from "typescript";
@@ -41,7 +41,7 @@ class PuerTSCTranspiler extends PuerBuiltinTranspiler {
                 .concat(glob.sync(normalize(tsRootPath + "/**/*.ts").replace(/\\/g, '/')) as any)
                 .concat(glob.sync(normalize(tsRootPath + "/**/*.mts").replace(/\\/g, '/')) as any),
             getCompilationSettings: () => compilerOptions,
-            getScriptVersion: () => Math.random().toString(),
+            getScriptVersion: (path) => statSync(path).mtimeMs.toString(),
             getScriptSnapshot: fileName => {
                 if (!existsSync(fileName)) {
                     return undefined;

@@ -37,7 +37,7 @@ class PuerTSCTranspiler extends base_1.default {
                 .concat(glob_1.glob.sync((0, path_1.normalize)(tsRootPath + "/**/*.ts").replace(/\\/g, '/')))
                 .concat(glob_1.glob.sync((0, path_1.normalize)(tsRootPath + "/**/*.mts").replace(/\\/g, '/'))),
             getCompilationSettings: () => compilerOptions,
-            getScriptVersion: () => Math.random().toString(),
+            getScriptVersion: (path) => (0, fs_1.statSync)(path).mtimeMs.toString(),
             getScriptSnapshot: fileName => {
                 if (!(0, fs_1.existsSync)(fileName)) {
                     return undefined;
