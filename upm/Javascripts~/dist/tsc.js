@@ -58,10 +58,7 @@ class PuerTSCTranspiler extends base_1.default {
     transpile(filepath) {
         filepath = process.platform == 'win32' ? (0, path_1.normalize)(filepath) : (0, path_1.normalize)(filepath);
         const emitOutput = this.services.getEmitOutput(filepath);
-        if (emitOutput.outputFiles.length > 1) {
-            throw new Error('please set sourcemap config to "inline"');
-        }
-        return emitOutput.outputFiles[0].text;
+        return emitOutput.outputFiles.filter(file => file.name.endsWith('js'))[0].text;
     }
 }
 exports.default = PuerTSCTranspiler;

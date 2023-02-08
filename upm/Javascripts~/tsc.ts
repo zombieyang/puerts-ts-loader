@@ -35,7 +35,7 @@ class PuerTSCTranspiler extends PuerBuiltinTranspiler {
                 compilerOptions = DEFAULT_TS_CONFIG
             }
         }
-        
+
         this.services = ts.createLanguageService({
             getScriptFileNames: () => []
                 .concat(glob.sync(normalize(tsRootPath + "/**/*.ts").replace(/\\/g, '/')) as any)
@@ -63,11 +63,7 @@ class PuerTSCTranspiler extends PuerBuiltinTranspiler {
     transpile(filepath: string): string {
         filepath = process.platform == 'win32' ? normalize(filepath) : normalize(filepath)
         const emitOutput = this.services.getEmitOutput(filepath);
-        
-        if (emitOutput.outputFiles.length > 1) {
-            throw new Error('please set sourcemap config to "inline"');
-        }
-        return emitOutput.outputFiles[0].text;
+        return emitOutput.outputFiles.filter(file => file.name.endsWith('js'))[0].text;
     }
 }
 
