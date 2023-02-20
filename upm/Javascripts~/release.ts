@@ -1,7 +1,8 @@
 import { readFileSync } from "fs";
+import { join } from "path";
 import * as ts from "typescript";
 
-function compile(refs: string[]): boolean {
+function compile(saveTo: string, refs: string[]): boolean {
     let tsconfigIndex = 0;
     const builder = ts.createSolutionBuilder(
         ts.createSolutionBuilderHost(Object.assign({}, ts.sys, {
@@ -21,16 +22,16 @@ function compile(refs: string[]): boolean {
         }), function(...args) {
             const config = args[1];
             if (config) {
-                config.outDir = `T:/_CODE_/puerts_FP_demo/Assets/Puer_Gen/TSOutput/${tsconfigIndex++}/Resources`;
+                config.outDir = join(saveTo, `${tsconfigIndex++}/Resources`);
             }
             return ts.createEmitAndSemanticDiagnosticsBuilderProgram.apply(ts, args);
         }, function(err) {console.warn(err.messageText)}),
-        ["/puer-mock/tsconfig.json"], { outDir: 'T:\\_CODE_\\puerts_FP_demo\\Assets\\Puer_Gen\\Resources' }
+        ["/puer-mock/tsconfig.json"], { outDir: join(saveTo, 'Resources') }
     );
     return builder.build() == 0;
 }
 
 
-export default function ReleaseTS(tsConfigBasePaths: string[]): boolean {
-    return compile(tsConfigBasePaths);
+export default function ReleaseTS(saveTo: string, tsConfigBasePaths: string[]): boolean {
+    return compile(saveTo, tsConfigBasePaths);
 }

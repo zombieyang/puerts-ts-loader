@@ -24,8 +24,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = require("fs");
+const path_1 = require("path");
 const ts = __importStar(require("typescript"));
-function compile(refs) {
+function compile(saveTo, refs) {
     let tsconfigIndex = 0;
     const builder = ts.createSolutionBuilder(ts.createSolutionBuilderHost(Object.assign({}, ts.sys, {
         readFile(path) {
@@ -44,13 +45,13 @@ function compile(refs) {
     }), function (...args) {
         const config = args[1];
         if (config) {
-            config.outDir = `T:/_CODE_/puerts_FP_demo/Assets/Puer_Gen/TSOutput/${tsconfigIndex++}/Resources`;
+            config.outDir = (0, path_1.join)(saveTo, `${tsconfigIndex++}/Resources`);
         }
         return ts.createEmitAndSemanticDiagnosticsBuilderProgram.apply(ts, args);
-    }, function (err) { console.warn(err.messageText); }), ["/puer-mock/tsconfig.json"], { outDir: 'T:\\_CODE_\\puerts_FP_demo\\Assets\\Puer_Gen\\Resources' });
+    }, function (err) { console.warn(err.messageText); }), ["/puer-mock/tsconfig.json"], { outDir: (0, path_1.join)(saveTo, 'Resources') });
     return builder.build() == 0;
 }
-function ReleaseTS(tsConfigBasePaths) {
-    return compile(tsConfigBasePaths);
+function ReleaseTS(saveTo, tsConfigBasePaths) {
+    return compile(saveTo, tsConfigBasePaths);
 }
 exports.default = ReleaseTS;

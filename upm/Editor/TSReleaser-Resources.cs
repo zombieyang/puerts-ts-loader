@@ -9,6 +9,7 @@ namespace Puerts
         [MenuItem("PuerTS/TSLoader/Release TS To Resources")]
         public static void ReleaseToResources()
         {
+            var saveTo = Configure.GetCodeOutputDirectory();
             string[] allPaths = TSDirectoryCollector.GetAllDirectoryAbsPath();
             
             var env = new JsEnv();
@@ -20,21 +21,22 @@ namespace Puerts
                 }
             })")(Path.GetFullPath("Packages/com.tencent.puerts.ts-loader/Javascripts~"));
 
-            var TSCRunner = env.Eval<Action<string[]>>(@" 
+            var TSCRunner = env.Eval<Action<string, string[]>>(@" 
                 (function() { 
                     const releaseTS = require('./dist/release').default;
 
-                    return function(tsConfigPathCSArr) {
+                    return function(saveTo, tsConfigPathCSArr) {
                         const arr = [];
                         for (let i = 0; i < tsConfigPathCSArr.Length; i++) {
                             arr.push(tsConfigPathCSArr.get_Item(i));
                         }
-                        return releaseTS(arr);
+                        return releaseTS(saveTo, arr);
                     }
                 })()
             ");
 
-            TSCRunner(allPaths);
+            TSCRunner(saveTo + "/TSOutput/", allPaths);
+            UnityEngine.Debug.Log("Outputed Javascript to " + saveTo + "/TSOutput/");
             env.Dispose();
         }
     }
