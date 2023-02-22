@@ -18,3 +18,4 @@ env.ExecuteModule("main.mts");
 
 ## TODO
 * sourceMap
+* typescript解除对Node的依赖
