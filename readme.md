@@ -18,4 +18,5 @@ env.ExecuteModule("main.mts");
 
 ## TODO
 * sourceMap
+* consoleRedirect
 * typescript解除对Node的依赖
