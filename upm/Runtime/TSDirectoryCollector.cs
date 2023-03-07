@@ -123,7 +123,8 @@ namespace Puerts
         {
             foreach (KeyValuePair<string, TSCompiler> item in tsCompilers)
             {
-                if (absPath.Contains(item.Key)) {
+                if (absPath.Contains(item.Key)) 
+                {
                     return item.Value.EmitTSFile(absPath);
                 } 
             }
@@ -134,7 +135,8 @@ namespace Puerts
         {
             foreach (KeyValuePair<string, TSCompiler> item in tsCompilers)
             {
-                if (assetPath.Contains(item.Key)) { 
+                if (assetPath.Contains(item.Key)) 
+                { 
                     return Path.GetRelativePath(item.Key, assetPath);
                 }
             }

@@ -7,3 +7,6 @@ upm/Samples~/**/*/UserSettings
 upm/Samples~/**/*.vsconfig
 upm/Samples~/**/*.sln
 upm/Samples~/**/*.csproj
+node_modules
+.DS_Store
+ts-monorepo-test

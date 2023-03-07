@@ -49,7 +49,6 @@ export default 'hello world'
 {
     ""compilerOptions"": { 
         ""target"": ""esnext"",
-        ""module"": ""ES2015"",
         ""jsx"": ""react"",
         ""inlineSourceMap"": true,
         ""moduleResolution"": ""node"",
@@ -57,6 +56,10 @@ export default 'hello world'
         ""noImplicitAny"": true,
         ""typeRoots"": [
         ],
+
+        ""module"": ""ES2015"",
+        ""composite"": ""true"",
+        ""outDir"": ""./Resources""
     }
 }"
             );

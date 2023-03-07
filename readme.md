@@ -1,10 +1,11 @@
 # 在PuerTS里更自如地使用Typescript
-* 内置一套Typescript组织方式
-    * 在Asset面板中直接创建Typescript
-    * 提供一个将这些Typescript编译到Resources目录的示例工具
-* 提供配套Loader
-    * 在Editor下，让PuerTS可以直接读取TS而无需自行tsc。
-    * 在Runtime下，可以让你链式组织Loader。
+* 提供一个PuerTS Loader
+    * 在Editor下，可以直接读取TS，无需自行tsc。
+    * 在Runtime下，可以让你插入自己的Loader，完成加载。且外插Loader以链式组织。
+* 内置一套Typescript管理方式
+    * 可在Asset面板中直接创建Typescript。
+    * 将Typescript文件视为ScriptableObject，可拖入Editor面板上。
+    * 可以编写自己的工具，在发布前将Typescript统一编译为js文件。
 
 ## 如何开始
 1. 通过upm方式加载本包
@@ -16,7 +17,15 @@ var env = new Puerts.JsEnv(new Puerts.TSLoader());
 env.ExecuteModule("main.mts");
 ```
 
+## 示例
+本包遵循UPM包结构。示例位于`upm/Samples`
+1. Sample 1
+    最简单的示例，Editor下加载Assets目录下的TS，Runtime下通过链式组织两个Loader完成加载工作。
+    且通过PUERTS_TSLOADER_DISABLE_EDITOR_FEATURE，可以在Editor内测试Runtime下的Loader的效果。
+2. Sample 2
+    演示了如何添加一个Assets目录外的TSProject，且该Project使用webpack将node_modules里的代码打包入项目
+
 ## TODO
 * sourceMap
 * consoleRedirect
-* typescript解除对Node的依赖
+* 解除对Node的依赖

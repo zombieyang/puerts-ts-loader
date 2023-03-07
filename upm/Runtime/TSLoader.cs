@@ -83,7 +83,11 @@ namespace Puerts
                 debugpath = ""; 
                 var content = TSDirectoryCollector.EmitTSFile(filepath);
                 return content; 
-            } 
+            } else if (System.IO.File.Exists(filepath)) {
+                debugpath = filepath;
+                return System.IO.File.ReadAllText(filepath);
+                
+            }
 #else
             if (specifier.EndsWith(".ts") || specifier.EndsWith(".mts"))
             {
