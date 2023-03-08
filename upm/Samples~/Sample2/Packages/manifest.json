@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "com.tencent.puerts.core": "1.4.1",
+    "com.tencent.puerts.core": "2.0.0-pre.2",
     "com.tencent.puerts.ts-loader": "file:../../../",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.tilemap": "1.0.0",
@@ -53,7 +53,7 @@
   "scopedRegistries": [
     {
       "name": "package.openupm.com",
-      "url": "https://package.openupm.cn",
+      "url": "https://package.openupm.com",
       "scopes": [
         "com.openupm",
         "com.tencent.puerts.core"
