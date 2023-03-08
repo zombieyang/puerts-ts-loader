@@ -1,18 +1,18 @@
 {
   "dependencies": {
     "com.tencent.puerts.core": {
-      "version": "1.4.1-pre.2",
+      "version": "1.4.1",
       "depth": 0,
       "source": "registry",
       "dependencies": {},
-      "url": "https://package.openupm.com"
+      "url": "https://package.openupm.cn"
     },
     "com.tencent.puerts.ts-loader": {
       "version": "file:../../../",
       "depth": 0,
       "source": "local",
       "dependencies": {
-        "com.tencent.puerts.core": "1.4.0"
+        "com.tencent.puerts.core": "1.4.1"
       }
     },
     "com.unity.2d.sprite": {
