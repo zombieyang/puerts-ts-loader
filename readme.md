@@ -45,7 +45,8 @@ tsconfig下也可以放置js文件，且能像上述方式一样加载，但需�
 ## tsconfig间引用说明
 ts-loader本身支持tsconfig之间的ts互相`import`，但你需要做一些配置才能让编辑器的`tsc`给你正确的提示
 1. project references
-这个是与`compilerOptions`同级的配置，若不配置，则无法获得别的ts导出的内容。配置方式如下：
+   
+   这个是与`compilerOptions`同级的配置，若不配置，则无法获得别的ts导出的内容。配置方式如下：
 ```
  "references": [
      {
@@ -57,7 +58,8 @@ ts-loader本身支持tsconfig之间的ts互相`import`，但你需要做一些�
  ]
 ```
 2. paths
-这个是在`compilerOptions`里的配置，如果不配置，则自动完成的加载路径会有一堆相对符号，最终无法被ts-loader处理。
+   
+   这个是在`compilerOptions`里的配置，如果不配置，则自动完成的加载路径会有一堆相对符号，最终无法被ts-loader处理。
 ```
 "*": [
     "另一个tsconfig的路径/*",
@@ -65,4 +67,5 @@ ts-loader本身支持tsconfig之间的ts互相`import`，但你需要做一些�
 ]
 ```
 3. module
-这个是`compilerOptions`里的配置。没错就是用于指定输出模块格式的。只有配置为`None`或者`commonjs`，别的地方才能正确获得本项目的代码提示。本人不确定这是不是Bug。但总之该配置项会在ts-loader最终处理ts时统一改为ES2015，因此建议你在项目中填`None`
+   
+   这个是`compilerOptions`里的配置。没错就是用于指定输出模块格式的。只有配置为`None`或者`commonjs`，别的地方才能正确获得本项目的代码提示。本人不确定这是不是Bug。但总之该配置项会在ts-loader最终处理ts时统一改为ES2015，因此建议你在项目中填`None`
