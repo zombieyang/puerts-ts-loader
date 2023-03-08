@@ -10,13 +10,13 @@
         "typeRoots": [],
         "paths": {
             "*": [
-                "../../Puer-Project/*"
+                "../../Puer-Project/out/*"
             ]
         }
     },
     "references": [
         {
-            "path": "../../Puer-Project"
+            "path": "../../Puer-Project/out"
         }
     ]
 }

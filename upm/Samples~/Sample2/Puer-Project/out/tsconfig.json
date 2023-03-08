@@ -1,8 +1,7 @@
 {
-    "include": ["runtime.gen.mjs"],
     "compilerOptions": { 
         "target": "esnext",
-        "module": "ES2015",
+        "module": "None",
         "jsx": "react",
         "inlineSourceMap": true,
         "moduleResolution": "node",
@@ -12,8 +11,8 @@
         "composite": true,
         "outDir": "./out",
         "typeRoots": [
-            "node_modules",
-            "node_modules/@types",
+            "../node_modules",
+            "../node_modules/@types",
         ],
     }
 }
