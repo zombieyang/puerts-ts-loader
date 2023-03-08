@@ -1,10 +1,10 @@
-# 在PuerTS里更自如地使用Typescript
+# TSLoader - 解决在普洱里使用Typescript的大多数问题
+* 提供配套Loader
+    * 在Editor下，让PuerTS可以直接读取typescript而无需自行tsc。
+    * 在Runtime下，可以让你链式添加自己的Loader。
 * 内置一套Typescript组织方式
     * 在Asset面板中直接创建Typescript
-    * 提供一个将这些Typescript编译到Resources目录的示例工具
-* 提供配套Loader
-    * 在Editor下，让PuerTS可以直接读取TS而无需自行tsc。
-    * 在Runtime下，可以让你链式组织Loader。
+    * 内置一个将所有Typescript编译为Resources的脚本。你可以将它适配成自己的资源管理模式
 
 ## 如何开始
 1. 通过upm方式加载本包

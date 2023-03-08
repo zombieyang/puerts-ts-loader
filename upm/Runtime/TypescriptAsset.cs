@@ -58,7 +58,7 @@ export default 'hello world'
         ],
 
         ""module"": ""ES2015"",
-        ""composite"": ""true"",
+        ""composite"": true,
         ""outDir"": ""./Resources""
     }
 }"

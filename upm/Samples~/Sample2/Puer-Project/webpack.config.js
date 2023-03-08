@@ -2,10 +2,12 @@ module.exports = {
     mode: 'production',
 
     entry: {
-        index: './src/index.mjs'
+        'runtime': './runtime/index.mjs',
+        'editor': './editor/index.mjs',
+        'axios': 'axios'
     },
     output: {
-        filename: 'runtime.gen.mjs',
-        path: __dirname
+        filename: '[name].gen.mjs',
+        path: __dirname + '/external'
     }
 }
