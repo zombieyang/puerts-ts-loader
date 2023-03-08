@@ -1,7 +1,7 @@
-# 在PuerTS里更自如地使用Typescript
-* 提供一个PuerTS Loader
-    * 在Editor下，可以直接读取TS，无需自行tsc。
-    * 在Runtime下，可以让你插入自己的Loader，完成加载。且外插Loader以链式组织。
+# TSLoader: 解决普洱下使用Typescript的大部分问题
+* 提供一个PuerTS的Loader，使你：
+    * 在Editor下，可以直接读取TS。无需研究tsconfig、无需自行tsc。
+    * 在Runtime下，也允许让你插入自己的Loader，且Loader以链式组织。
 * 内置一套Typescript管理方式
     * 可在Asset面板中直接创建Typescript。
     * 将Typescript文件视为ScriptableObject，可拖入Editor面板上。
