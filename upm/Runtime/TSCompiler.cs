@@ -3,7 +3,7 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 
-namespace Puerts
+namespace Puerts.TSLoader
 {
     public class TSCompiler
     {

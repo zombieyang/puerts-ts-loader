@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace Puerts
+namespace Puerts.TSLoader
 {
     public class TSLoader : Puerts.ILoader, Puerts.IModuleChecker
     {

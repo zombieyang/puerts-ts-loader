@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEditor;
 using System.Collections.Generic;
 
-namespace Puerts
+namespace Puerts.TSLoader
 {
     [InitializeOnLoad]
     public class TSDirectoryCollector

@@ -14,7 +14,7 @@ using UnityEditor.Experimental.AssetImporters;
 #endif
 using UnityEngine;
  
-namespace Puerts
+namespace Puerts.TSLoader
 {
 
     [ScriptedImporter(1, "mts")]

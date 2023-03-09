@@ -5,7 +5,7 @@ using System;
 using System.IO;
 using System.Reflection;
 
-namespace Puerts
+namespace Puerts.TSLoader
 {
     public class TypescriptAsset : ScriptableObject 
     {
