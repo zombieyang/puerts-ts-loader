@@ -42,6 +42,20 @@ tsconfig下也可以放置js文件，且能像上述方式一样加载，但需�
 * consoleRedirect
 * 解除对Node的依赖
 
+## 迁移指南
+如果你已经有一个Puer项目，想使用`TSLoader`非常简单，不会出现不向下兼容的情况。
+
+首先，如果你原项目在创建JsEnv时就没有传递Loader，那只需要在创建JsEnv时，像上面一样创建TSLoader并传入就行。
+
+如果你以前已经有自定义Loader，比如`new JsEnv(LoaderA)`，那么你可以这样修改：
+```
+        var loader = new TSLoader();
+        loader.UseRuntimeLoader(LoaderA);
+        JsEnv env = new JsEnv(loader);
+
+```
+这样你就可以在编辑器里使用TSLoader的方式，同时不影响你原有逻辑的使用。
+
 ## tsconfig间引用说明
 ts-loader本身支持tsconfig之间的ts互相`import`，但你需要做一些配置才能让编辑器的`tsc`给你正确的提示
 1. project references
