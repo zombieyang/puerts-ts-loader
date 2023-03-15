@@ -1,13 +1,16 @@
 # TSLoader: 解决普洱下使用Typescript的大部分问题
 
-## 核心功能：
-提供一个PuerTS的Loader，使你在Editor下，可以直接读取TS。无需研究tsconfig、无需自行编译ts，无需理会和调试相关的debugpath/sourceMap/控制台跳转。
+> 核心功能：
 
-其他功能
-> 在Runtime下，以链式组织多个Loader
-> 可在Asset面板中直接创建Typescript，像C#似的。
-> 将Typescript文件视为ScriptableObject，可拖入Editor面板上。
-> 可以编写自己的工具，通过TSLoader的API，在发布前将Typescript统一编译为js文件。
+  * 提供一个PuerTS的Loader，使你在Editor下，可以直接读取TS。
+  * 无需研究tsconfig、无需自行编译ts，无需理会和调试相关的debugpath/sourceMap/控制台跳转。
+
+> 其他功能
+  * 在Runtime下，依然可以使用自己Loader，无缝切换
+  * 在Runtime下，以链式组织多个Loader
+  * 可在Asset面板中直接创建Typescript，就像C#一样。
+  * 将Typescript文件视为ScriptableObject，可拖入Editor面板上。
+  * 可以编写自己的工具，通过TSLoader的API，在发布前将Typescript统一编译为js文件。
 
 ## 如何开始
 1. 确认你已通过upm方式安装好PuerTS，可以用openupm、也可以clone后add from file。
@@ -36,10 +39,6 @@ env.ExecuteModule("main.mts");
 3. Sample 3 - 调试器、sourceMap、ConsoleRedirect的测试
 4. [puerts-webgl](https://github.com/zombieyang/puerts_unity_webgl_demo) b的Sample 2/8/9 都使用了ts-loader
 
-## TODO
-* API doc
-* .node模块引入example
-* 解除对Node的依赖
 
 ## 迁移指南
 如果你已经有一个Puer项目，想使用`TSLoader`非常简单，不会出现不向下兼容的情况。
@@ -94,3 +93,9 @@ ts-loader本身支持tsconfig之间的ts互相`import`，但你需要做一些�
 3. module
    
    这个是`compilerOptions`里的配置。没错就是用于指定输出模块格式的。只有配置为`None`或者`commonjs`，别的地方才能正确获得本项目的代码提示。本人不确定这是不是Bug。但总之该配置项会在ts-loader最终处理ts时统一改为ES2015，因此建议你在项目中填`None`
+   
+   
+## TODO
+* API doc
+* .node模块引入example
+* 解除对Node的依赖
