@@ -25,10 +25,12 @@ public class TSLoaderExample : MonoBehaviour
     {
         var loader = new TSLoader();
         // UseRuntimeLoader在Runtime下会形成链式处理。在Editor下不生效。
-        // Editor下打开PUERTS_TSLOADER_DISABLE_EDITOR_FEATURE可以测试runtime下的效果。
-        loader.UseRuntimeLoader(new TestLoader());
+        // 执行顺序是Loader加入顺序的倒序
+
         // 通过菜单命令可以快速把TS构建到Resources目录供DefaultLoader使用   
         loader.UseRuntimeLoader(new DefaultLoader());
+        // Editor下打开PUERTS_TSLOADER_DISABLE_EDITOR_FEATURE可以测试runtime下的效果。
+        loader.UseRuntimeLoader(new TestLoader());
 
         JsEnv env = new JsEnv(loader);
         env.ExecuteModule("test.mts");

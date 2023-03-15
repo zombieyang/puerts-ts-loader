@@ -5,7 +5,8 @@ module.exports = {
     entry: {
         'runtime': './runtime/index.mjs',
         'editor': './editor/index.mjs',
-        'axios': 'axios'
+        'axios': 'axios',
+        'sqlite3': 'sqlite3',
     },
     output: {
         filename: '[name].gen.mjs',
@@ -39,6 +40,7 @@ module.exports = {
         'util',
         'assert',
         'events',
-        'tty'
+        'tty',
+        '@mapbox/node-pre-gyp'
     ].reduce((prev, v) => { prev[v] = 'commonjs ' + v; return prev }, {})
 }

@@ -105,10 +105,6 @@ namespace UnityEditor.Console
 
         public static bool OpenFileInIDE(string filepath, int line, int column)
         {
-            var projectPath = UnityEngine.Application.dataPath.Substring(0, UnityEngine.Application.dataPath.Length - 6);
-
-            if (filepath.IndexOf(projectPath) == 0) filepath = filepath.Substring(projectPath.Length);
-
             return CodeEditor.CurrentEditor.OpenProject(filepath, line, column);
         }
     }

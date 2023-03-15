@@ -38,8 +38,8 @@ tsconfig下也可以放置js文件，且能像上述方式一样加载，但需�
 该Project使用webpack，将node_modules里的代码打包成为单独的JS（为了解决node_modules不好发布的问题）。这些单独的JS再被TSLoader控制中的TS所使用。
 3. [puerts-webgl](https://github.com/zombieyang/puerts_unity_webgl_demo) 的Sample 2/8/9 都使用了ts-loader
 ## TODO
-* sourceMap
-* consoleRedirect
+* 测试调试
+* .node模块引入example
 * 解除对Node的依赖
 
 ## 迁移指南

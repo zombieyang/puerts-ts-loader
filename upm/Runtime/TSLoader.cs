@@ -81,8 +81,8 @@ namespace Puerts.TSLoader
             string filepath = Resolve(specifier);
             if (filepath.EndsWith("ts")) {
                 debugpath = filepath; 
-                var content = TSDirectoryCollector.EmitTSFile(filepath);
-                return content; 
+                return TSDirectoryCollector.EmitTSFile(filepath); 
+                
             } else if (System.IO.File.Exists(filepath)) {
                 debugpath = filepath;
                 return System.IO.File.ReadAllText(filepath);
@@ -94,26 +94,36 @@ namespace Puerts.TSLoader
                 specifier = specifier.Replace(".mts", ".mjs").Replace(".ts", ".js");
             }
 #endif
+            string content = null;
+            debugpath = "";
             if (LoaderChain.Count == 0) 
             {
-                return puerDefaultLoader.ReadFile(specifier, out debugpath);
+                content = puerDefaultLoader.ReadFile(specifier, out debugpath);
             }
             else 
             {
                 if (lastResolveSpecifier == specifier) 
                 {
-                    return lastResolveLoader.ReadFile(specifier, out debugpath);
+                    content = lastResolveLoader.ReadFile(specifier, out debugpath);
                 }
                 foreach (var loader in LoaderChain)
                 {
                     if (loader.FileExists(specifier)) 
                     {
-                        return loader.ReadFile(specifier, out debugpath);
+                        content = loader.ReadFile(specifier, out debugpath);
                     }
                 }
-                debugpath = "";
-                return null;
             }
+
+#if UNITY_EDITOR && !PUERTS_TSLOADER_DISABLE_EDITOR_FEATURE
+            // consider give a hook in puerts.core later.
+            if (specifier.Contains("puerts/polyfill.mjs") || specifier.Contains("puerts/nodepatch.mjs")) content = @"
+import '../console-track.mjs'
+import '../puerts-source-map-support.mjs'
+" 
+                + content;
+#endif
+            return content;
         }
     }
 }
