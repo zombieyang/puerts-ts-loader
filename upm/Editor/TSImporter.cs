@@ -22,9 +22,8 @@ namespace Puerts.TSLoader
     {
         public override void OnImportAsset(AssetImportContext ctx)
         {
-            TypescriptAsset subAsset = ScriptableObject.CreateInstance<TypescriptAsset>();
-            ctx.AddObjectToAsset("typescript", subAsset);
-
+            TextAsset subAsset = new TextAsset(File.ReadAllText(ctx.assetPath));
+            ctx.AddObjectToAsset("text", subAsset);
             ctx.SetMainObject(subAsset);
         }
     }

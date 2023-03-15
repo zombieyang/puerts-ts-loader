@@ -35,7 +35,7 @@ namespace Puerts.TSLoader
             {
                 _TSCRunner = env.Eval<Action<string, string[], Func<int, string>>>(@" 
                     (function() { 
-                        const releaseTS = require('./dist/release').default;
+                        const releaseTS = require('./release').default;
 
                         return function(saveTo, tsConfigPathCSArr, relativePathCallback) {
                             const arr = [];

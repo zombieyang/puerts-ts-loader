@@ -80,7 +80,7 @@ namespace Puerts.TSLoader
 #if UNITY_EDITOR && !PUERTS_TSLOADER_DISABLE_EDITOR_FEATURE
             string filepath = Resolve(specifier);
             if (filepath.EndsWith("ts")) {
-                debugpath = ""; 
+                debugpath = filepath; 
                 var content = TSDirectoryCollector.EmitTSFile(filepath);
                 return content; 
             } else if (System.IO.File.Exists(filepath)) {

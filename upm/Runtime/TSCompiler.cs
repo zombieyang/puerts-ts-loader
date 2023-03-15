@@ -8,6 +8,7 @@ namespace Puerts.TSLoader
     public class TSCompiler
     {
         Func<string, string> emitTSFile;
+        Func<string, string> getSourceMap;
         public TSCompiler(string tsRootPath)
         {
             var env = new JsEnv();
@@ -23,11 +24,22 @@ namespace Puerts.TSLoader
 
             emitTSFile = env.Eval<Func<string, string>>(@"
                 (function() {
-                    const Transpiler = require('.').default;
+                    const Transpiler = require('./tsc').default;
                     const transpiler = new Transpiler(global.tsRootPath);
 
                     return function(tsFilePath) {
-                        return transpiler.transpile(tsFilePath);
+                        return transpiler.transpile(tsFilePath).content;
+                    }
+                })()
+            ");
+
+            getSourceMap = env.Eval<Func<string, string>>(@"
+                (function() {
+                    const Transpiler = require('./tsc').default;
+                    const transpiler = new Transpiler(global.tsRootPath);
+
+                    return function(tsFilePath) {
+                        return transpiler.transpile(tsFilePath).sourceMap;
                     }
                 })()
             ");
@@ -36,6 +48,12 @@ namespace Puerts.TSLoader
         public string EmitTSFile(string tsPath) 
         {
             var ret = emitTSFile(tsPath);
+            return ret;
+        }
+
+        public string GetSourceMap(string tsPath) 
+        {
+            var ret = getSourceMap(tsPath);
             return ret;
         }
     }

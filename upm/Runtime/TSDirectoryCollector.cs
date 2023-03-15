@@ -51,45 +51,6 @@ namespace Puerts.TSLoader
                 var absPath = Path.GetFullPath(tsConfigPath);
                 AddTSCompiler(Path.GetDirectoryName(absPath));
             }
-
-            // JsEnv JSONHandler = new JsEnv();
-            // try  
-            // {
-            //     JSONHandler.UsingFunc<string, JSObject, string>();
-            //     JSONHandler.UsingFunc<string[], JSObject>();
-
-            //     Func<string, JSObject, string> TSConfigHandler = JSONHandler
-            //         .Eval<Func<string, JSObject, string>>(@"(function(jsonStr, arr) {
-            //         if (!arr.length) return jsonStr; 
-            //         const tsconfig = JSON.parse(jsonStr);
-            //         // tsconfig.compilerOptions.paths = tsconfig.compilerOptions.paths || {};
-            //         // tsconfig.compilerOptions.paths['*'] = arr.map(item => item + '/*'); 
-            //         tsconfig.compilerOptions.composite = true;
-            //         // tsconfig.references = arr.map(item => ({path: item}));
-            //         return JSON.stringify(tsconfig);  
-            //     })");
-            //     Func<string[], JSObject> CSArrToJSArr = JSONHandler
-            //         .Eval<Func<string[], JSObject>>(@"(function(csarr) {
-            //         const jsarr = [];
-            //         for (let i = 0; i < csarr.Length; i++) {
-            //             jsarr.push(csarr.get_Item(i));
-            //         }
-            //         return jsarr;
-            //     })");
-            //     string[] allTSRoot = tsCompilers.Keys.ToArray();
-            //     foreach (string tsRoot in allTSRoot)
-            //     {
-            //         string newTSConfig = TSConfigHandler(
-            //             File.ReadAllText(Path.Combine(tsRoot, "tsconfig.json")),
-            //             CSArrToJSArr(tsCompilers.Keys.Where(key => key != tsRoot).ToArray())
-            //         );
-            //         File.WriteAllText(Path.Combine(tsRoot, "tsconfig.json"), newTSConfig);
-            //     }
-            // }
-            // catch (Exception e)
-            // {
-            // }
-            // JSONHandler.Dispose();
         }
 
         public static string[] GetAllDirectoryAbsPath()
@@ -99,6 +60,7 @@ namespace Puerts.TSLoader
 
         public static void AddTSCompiler(string absPath)
         {
+            if (tsCompilers.ContainsKey(absPath)) return;
             tsCompilers[absPath] = new TSCompiler(absPath);
         }
 
@@ -111,6 +73,7 @@ namespace Puerts.TSLoader
                 foreach (string specifier in specifiers)
                 {
                     string tryPath = Path.Combine(item.Key, specifier);
+                    // UnityEngine.Debug.Log($"checking {item.Key} Contains {specifier}: {File.Exists(tryPath)}");
                     if (File.Exists(tryPath)) {
                         return tryPath;
                     }
@@ -129,6 +92,18 @@ namespace Puerts.TSLoader
                 } 
             }
             throw new Exception("emit tsfile " + absPath + " failed: not found");
+        }
+
+        public static string GetSourceMap(string absPath)
+        {
+            foreach (KeyValuePair<string, TSCompiler> item in tsCompilers)
+            {
+                if (absPath.Contains(item.Key)) 
+                {
+                    return item.Value.GetSourceMap(absPath);
+                } 
+            }
+            throw new Exception("get source map " + absPath + " failed: not found");
         }
 
         public static string GetSpecifierByAssetPath(string assetPath) 

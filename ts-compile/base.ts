@@ -3,7 +3,7 @@ abstract class PuerBuiltinTranspiler {
 
     }
 
-    abstract transpile(specifier: string): string;
+    abstract transpile(specifier: string): { content: string, sourceMap: string };
 }
 
 export default PuerBuiltinTranspiler;

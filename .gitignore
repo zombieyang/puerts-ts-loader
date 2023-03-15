@@ -10,5 +10,6 @@ upm/Samples~/**/*.csproj
 node_modules
 .vscode
 .DS_Store
+.idea
 **/*/package-lock.json
 ts-monorepo-test

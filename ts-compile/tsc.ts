@@ -1,7 +1,7 @@
 import { existsSync, readFileSync, statSync } from "fs";
 import { glob } from "glob";
 import { join, normalize } from "path";
-import ts from "typescript";
+import ts, { ModuleKind } from "typescript";
 import PuerBuiltinTranspiler from "./base";
 
 const DEFAULT_TS_CONFIG = {
@@ -36,6 +36,8 @@ class PuerTSCTranspiler extends PuerBuiltinTranspiler {
             }
         }
 
+        compilerOptions.module = ModuleKind.ES2015;
+
         this.services = ts.createLanguageService({
             getScriptFileNames: () => []
                 .concat(glob.sync(normalize(tsRootPath + "/**/*.ts").replace(/\\/g, '/')) as any)
@@ -60,10 +62,15 @@ class PuerTSCTranspiler extends PuerBuiltinTranspiler {
         }, ts.createDocumentRegistry());
     }
 
-    transpile(filepath: string): string {
+    transpile(filepath: string): { content: string, sourceMap: string } {
         filepath = process.platform == 'win32' ? normalize(filepath) : normalize(filepath)
         const emitOutput = this.services.getEmitOutput(filepath);
-        return emitOutput.outputFiles.filter(file => file.name.endsWith('js'))[0].text;
+        const content = emitOutput.outputFiles.filter(file => file.name.endsWith('js'))[0];
+        const sourceMap = emitOutput.outputFiles.filter(file => file.name.endsWith('map'))[0];
+        return {
+            content: content?.text,
+            sourceMap: sourceMap?.text
+        };
     }
 }
 
