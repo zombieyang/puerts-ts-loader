@@ -15,5 +15,4 @@ function thrw() {
 
 
 
-
-thrw();
+export default thrw;

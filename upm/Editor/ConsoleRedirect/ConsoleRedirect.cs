@@ -46,6 +46,7 @@ namespace UnityEditor.Console
             if (!enable)
                 return;
 
+            UnityEngine.Debug.Log("[Puer-TSLoader] ConsoleRedirect is enabled. Please remember to add .mts,.ts,.mjs,.js in Preferences - External Tools - extensions handled");
             UnityEditor.Console.ConsoleHyperlink.Enable();
         }
 

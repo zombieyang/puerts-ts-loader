@@ -12,7 +12,9 @@ public class Main : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        env = new JsEnv(new TSLoader());
+        env = new JsEnv(new TSLoader(), 9222);
+        Application.runInBackground = true;
+        env.WaitDebugger();
 
         env.ExecuteModule(@"main.mjs");
 
