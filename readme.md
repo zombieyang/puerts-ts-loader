@@ -3,7 +3,7 @@
 > 核心功能：
 
   * 提供一个PuerTS的Loader，使你在Editor下，可以直接读取TS。
-  * 无需研究tsconfig、无需自行编译ts，无需理会和调试相关的debugpath/sourceMap/控制台跳转。
+  * 无需研究tsconfig、无需研究ESM、CommonJS，无需自行编译ts，无需理会和调试相关的debugpath/sourceMap/控制台跳转。
 
 > 其他功能
   * 在Runtime下，依然可以使用自己Loader，无缝切换
