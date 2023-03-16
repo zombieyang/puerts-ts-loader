@@ -103,4 +103,4 @@ TSLoader内置了一个`TSReleaser-Resources.cs`，会将所有TSLoader所管理
 * 解除对Node的依赖
 
 ## 鸣谢
-@throw-out 提供了sourceMap和ConsoleRedirect的支持。
+[@throw-out](https://github.com/throw-out) 提供了最为关键的sourceMap和ConsoleRedirect的支持。
