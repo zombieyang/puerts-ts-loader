@@ -1,5 +1,5 @@
+import { Axios } from "external/axios.gen.mjs";
 import "external/runtime.gen.mjs"
-import { Axios } from "external/axios.gen.mjs"
 
 const axios = new Axios({});
 axios

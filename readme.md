@@ -58,7 +58,7 @@ env.ExecuteModule("main.mts");
 ## TS加载说明
 在`ts-loader`概念里，每个`tsconfig`以及它所在的目录与子目录，会被认为是一个**TS项目**（有点类似asmdef的概念）。ts-loader在Unity编辑器下会自动扫描所有目录下的`tsconfig`，记录他们的位置。
 
-每个TS项目里的TS，都可以用它`相对于tsconfig.json的路径`，被ExecuteModule加载到（比如上文中的`main.mts`）。如果你创建ts的路径相对于`tsconfig`是`./lib/sub.mts`，那你就可以通过`ExecuteModule('./lib/sub.mts')`加载它。
+所有Typescript文件都可以用它`相对于tsconfig.json的路径`，被ExecuteModule加载到（比如上文中的`main.mts`）。如果你创建ts的路径相对于`tsconfig`是`./lib/sub.mts`，那你就可以通过`ExecuteModule('./lib/sub.mts')`加载它。
 
 不同的tsconfig间，其下的ts文件可以互相加载，比如相对于tsconfig A的`./main.mts`，可以通过`import './sub.mts'`加载相对于tsconfig B的`./sub.mts`。而无论tsconfig A和tsconfig B各自放在哪个位置。但这种情况下，你需要在tsconfig里做好配置，才能获得其他tsconfig下ts文件的代码提示。详见[tsconfig间引用说明](#tsconfig间引用说明)
 
@@ -94,8 +94,10 @@ ts-loader本身支持tsconfig之间的ts互相`import`，但你需要做一些�
    
    这个是`compilerOptions`里的配置。没错就是用于指定输出模块格式的。只有配置为`None`或者`commonjs`，别的地方才能正确获得本项目的代码提示。本人不确定这是不是Bug。但总之该配置项会在ts-loader最终处理ts时统一改为ES2015，因此建议你在项目中填`None`
    
+## 发布时的编译
+TSLoader内置了一个`TSReleaser-Resources.cs`，会将所有TSLoader所管理的Typescript文件编译并放到`Gen/Resources`目录。这样就可以被普洱内置的`DefaultLoader`所加载。
+
+如果你希望把TSLoader所管理的Typescript文件发布成别的形式，可以直接参考`ReleaseToResources.cs`，里面的`ReleaseAllTS`方法可能可以帮到你。
    
 ## TODO
-* API doc
-* .node模块引入example
 * 解除对Node的依赖
