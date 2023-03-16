@@ -11,6 +11,7 @@
   * 可在Asset面板中直接创建Typescript，就像C#一样。
   * 将Typescript文件视为ScriptableObject，可拖入Editor面板上。
   * 可以编写自己的工具，通过TSLoader的API，在发布前将Typescript统一编译为js文件。
+  * 
 [参考文章](https://zhuanlan.zhihu.com/p/614569767)
 
 ## 如何开始
