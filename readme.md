@@ -11,8 +11,8 @@
   * 可在Asset面板中直接创建Typescript，就像C#一样。
   * 将Typescript文件视为ScriptableObject，可拖入Editor面板上。
   * 可以编写自己的工具，通过TSLoader的API，在发布前将Typescript统一编译为js文件。
-  * 
-[参考文章](https://zhuanlan.zhihu.com/p/614569767)
+  
+[我为什么要做TSLoader](https://zhuanlan.zhihu.com/p/614569767)
 
 ## 如何开始
 1. 确认你已通过upm方式安装好PuerTS，可以用openupm、也可以clone后add from file。
