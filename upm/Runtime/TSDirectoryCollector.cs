@@ -35,6 +35,7 @@ namespace Puerts.TSLoader
                 else 
                     return new string[] { 
                         specifier,
+                        specifier + ".js",
                         specifier + ".ts"
                     };
             }
