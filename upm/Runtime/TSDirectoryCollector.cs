@@ -113,7 +113,7 @@ namespace Puerts.TSLoader
             {
                 if (assetPath.Contains(item.Key)) 
                 { 
-                    return Path.GetRelativePath(item.Key, assetPath);
+                    return Path_GetRelativePath_Shimming(item.Key, assetPath);
                 }
             }
             return "";
@@ -132,11 +132,22 @@ namespace Puerts.TSLoader
                     string tryPath = Path.Combine(item.Key, specifier);
                     if (File.Exists(tryPath)) {
                         return (TypescriptAsset)AssetDatabase
-                            .LoadAssetAtPath(Path.GetRelativePath(Path.Combine(UnityEngine.Application.dataPath, ".."), tryPath), typeof(TypescriptAsset));
+                            .LoadAssetAtPath(Path_GetRelativePath_Shimming(Path.Combine(UnityEngine.Application.dataPath, ".."), tryPath), typeof(TypescriptAsset));
                     }
                 }
             }
             return null;
+        }
+
+        protected static string Path_GetRelativePath_Shimming(string relativeTo, string path)
+        {
+            var uri = new Uri(relativeTo);
+            var rel = Uri.UnescapeDataString(uri.MakeRelativeUri(new Uri(path)).ToString()).Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
+            if (rel.Contains(Path.DirectorySeparatorChar.ToString()) == false)
+            {
+                rel = $".{ Path.DirectorySeparatorChar }{ rel }";
+            }
+            return rel;
         }
     }
 }
