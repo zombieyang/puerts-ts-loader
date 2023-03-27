@@ -1,7 +1,7 @@
 {
   "name": "com.tencent.puerts.ts-loader",
   "displayName": "Puerts TS loader",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0-rc.2",
   "description": "use typescript with more joy for PuerTS.",
   "keywords": [
     "Script"
