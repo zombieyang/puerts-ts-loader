@@ -5,10 +5,25 @@ using System.Collections.Generic;
 
 namespace Puerts.TSLoader
 {
-    public class TSLoader : Puerts.ILoader, Puerts.IModuleChecker
+    public class TSLoader : Puerts.ILoader, Puerts.IResolvableLoader, Puerts.IModuleChecker, IBuiltinLoadedListener
     {
         Puerts.DefaultLoader puerDefaultLoader = null;
         List<Puerts.ILoader> LoaderChain = new List<Puerts.ILoader>();
+
+        public void OnBuiltinLoaded(JsEnv env)
+        {
+            foreach (var loader in LoaderChain)
+            {
+                try 
+                {
+                    if (loader is IBuiltinLoadedListener) (loader as IBuiltinLoadedListener).OnBuiltinLoaded(env);
+                }
+                catch(Exception e)
+                {
+                    UnityEngine.Debug.LogException(e);
+                }
+            }
+        }
 
         public TSLoader(string externalTSConfigPath): this(new string[]{ externalTSConfigPath }) {}
 
@@ -35,11 +50,21 @@ namespace Puerts.TSLoader
             return !path.EndsWith(".cjs") && !path.EndsWith(".cts");
         }
 
-        public virtual string Resolve(string specifier)
+        public string Resolve(string specifier, string referrer)
         {
             lastResolveSpecifier = null;
 #if UNITY_EDITOR && !PUERTS_TSLOADER_DISABLE_EDITOR_FEATURE
-            var fullPath = TSDirectoryCollector.TryGetFullTSPath(specifier);
+            string fullPath;
+            if (PathHelper.IsRelative(specifier))
+            {
+                fullPath = TSDirectoryCollector.TryGetFullTSPath(
+                    PathHelper.normalize(PathHelper.Dirname(referrer) + "/" + specifier)
+                );
+            }
+            else
+            {
+                fullPath = TSDirectoryCollector.TryGetFullTSPath(specifier);
+            }
             if (fullPath != null) return fullPath;
 #else
             if (specifier.EndsWith(".ts") || specifier.EndsWith(".mts"))
@@ -49,6 +74,7 @@ namespace Puerts.TSLoader
 #endif
             if (LoaderChain.Count == 0) 
             {
+                // UnityEngine.Debug.Log(specifier + " use default loader");
                 if (puerDefaultLoader == null) puerDefaultLoader = new Puerts.DefaultLoader();
                 return puerDefaultLoader.FileExists(specifier) ? specifier : null;
             }
@@ -56,11 +82,28 @@ namespace Puerts.TSLoader
             {
                 foreach (var loader in LoaderChain)
                 {
-                    if (loader.FileExists(specifier)) 
+                    // UnityEngine.Debug.Log(specifier + " iterating loader chain:" + loader);
+                    if (loader is IResolvableLoader)
                     {
+                        var resolveResult = (loader as IResolvableLoader).Resolve(specifier, referrer);
                         lastResolveLoader = loader;
-                        lastResolveSpecifier = specifier;
-                        return specifier;
+                        lastResolveSpecifier = resolveResult;
+                        if (!String.IsNullOrEmpty(resolveResult)) {
+                            return resolveResult;
+                        }
+                    } 
+                    else 
+                    {
+                        if (PathHelper.IsRelative(specifier))
+                        {
+                            specifier = PathHelper.normalize(PathHelper.Dirname(referrer) + "/" + specifier);
+                        }
+                        if (loader.FileExists(specifier)) 
+                        {
+                            lastResolveLoader = loader;
+                            lastResolveSpecifier = specifier;
+                            return specifier;
+                        }
                     }
                 }
                 return null;
@@ -69,8 +112,7 @@ namespace Puerts.TSLoader
 
         public bool FileExists(string filename)
         {
-            var resolveResult = Resolve(filename);
-            return !string.IsNullOrEmpty(resolveResult);
+            return true;
         }
         string lastResolveSpecifier;
         Puerts.ILoader lastResolveLoader;
@@ -78,12 +120,15 @@ namespace Puerts.TSLoader
         public virtual string ReadFile(string specifier, out string debugpath)
         {
 #if UNITY_EDITOR && !PUERTS_TSLOADER_DISABLE_EDITOR_FEATURE
-            string filepath = Resolve(specifier);
-            if (filepath.EndsWith("ts")) {
+            string filepath = specifier;
+            if (filepath.EndsWith("ts")) 
+            {
                 debugpath = filepath; 
                 return TSDirectoryCollector.EmitTSFile(filepath); 
                 
-            } else if (System.IO.File.Exists(filepath)) {
+            } 
+            else if (System.IO.File.Exists(filepath)) 
+            {
                 debugpath = filepath;
                 return System.IO.File.ReadAllText(filepath);
                 
@@ -106,9 +151,9 @@ namespace Puerts.TSLoader
                 {
                     content = lastResolveLoader.ReadFile(specifier, out debugpath);
                 }
-                foreach (var loader in LoaderChain)
+                else
                 {
-                    if (loader.FileExists(specifier)) 
+                    foreach (var loader in LoaderChain)
                     {
                         content = loader.ReadFile(specifier, out debugpath);
                     }
