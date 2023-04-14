@@ -106,6 +106,85 @@ function emitLegacyIndexDeprecation(url, packageJSONUrl, base, main) {
     );
 }
 
+const protocolHandlers = Object.assign(Object.create(null), {
+  'file:': getFileProtocolModuleFormat,
+  'node:'() { return 'builtin'; },
+});
+const extensionFormatMap = {
+  '__proto__': null,
+  '.cjs': 'commonjs',
+  '.js': 'module',
+  '.json': 'json',
+  '.mjs': 'module',
+};
+const legacyExtensionFormatMap = {
+  '__proto__': null,
+  '.cjs': 'commonjs',
+  '.js': 'commonjs',
+  '.json': 'commonjs',
+  '.mjs': 'module',
+  '.node': 'commonjs',
+};
+function getLegacyExtensionFormat(ext) {
+  return legacyExtensionFormatMap[ext];
+}
+/**
+ * move from get_format.js by zombieyang
+ * @param {URL | URL['href']} url
+ * @param {{parentURL: string}} context
+ * @returns {Promise<string> | string | undefined} only works when enabled
+ */
+function defaultGetFormatWithoutErrors(url, context) {
+  const parsed = new URL(url);
+  if (!ObjectPrototypeHasOwnProperty(protocolHandlers, parsed.protocol))
+    return null;
+  return protocolHandlers[parsed.protocol](parsed, context, true);
+}
+/**
+ * @param {URL} url
+ * @returns {PackageType}
+ */
+function getPackageType(url) {
+  const packageConfig = getPackageScopeConfig(url);
+  return packageConfig.type;
+}
+/**
+ * @param {URL} url
+ * @param {{parentURL: string}} context
+ * @param {boolean} ignoreErrors
+ * @returns {string}
+ */
+function getFileProtocolModuleFormat(url, context, ignoreErrors) {
+  const filepath = fileURLToPath(url);
+  const ext = filepath.split(".").pop();
+  // const ext = extname(filepath);
+  if (ext === '.js') {
+    return getPackageType(url) === 'module' ? 'module' : 'commonjs';
+  }
+
+  const format = extensionFormatMap[ext];
+  if (format) return format;
+
+  // if (experimentalSpecifierResolution !== 'node') {
+  //   // Explicit undefined return indicates load hook should rerun format check
+  //   if (ignoreErrors) return undefined;
+  //   let suggestion = '';
+  //   if (getPackageType(url) === 'module' && ext === '') {
+  //     const config = getPackageScopeConfig(url);
+  //     const fileBasename = basename(filepath);
+  //     const relativePath = StringPrototypeSlice(relative(config.pjsonPath, filepath), 1);
+  //     suggestion = 'Loading extensionless files is not supported inside of ' +
+  //       '"type":"module" package.json contexts. The package.json file ' +
+  //       `${config.pjsonPath} caused this "type":"module" context. Try ` +
+  //       `changing ${filepath} to have a file extension. Note the "bin" ` +
+  //       'field of package.json can point to a file with an extension, for example ' +
+  //       `{"type":"module","bin":{"${fileBasename}":"${relativePath}.js"}}`;
+  //   }
+  //   throw new ERR_UNKNOWN_FILE_EXTENSION(ext, filepath, suggestion);
+  // }
+
+  return getLegacyExtensionFormat(ext) ?? null;
+}
 
 const packageJSONCache = new SafeMap(); /* string -> PackageConfig */
 
@@ -208,7 +287,7 @@ function getPackageScopeConfig(resolved) {
  * @returns {boolean}
  */
 function fileExists(url) {
-  return CS.System.IO.Path.IsExists(url)
+  return CS.System.IO.File.Exists(fileURLToPath(url))
 }
 
 /**

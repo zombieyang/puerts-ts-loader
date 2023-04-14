@@ -1,11 +1,13 @@
+const { join } = require("path");
+
 module.exports = {
     mode: 'production',
 
     target: 'web',
     entry: './resolve.js',
     output: {
-        filename: 'resolve.gen.mjs',
-        path: __dirname,
+        filename: 'resolve.mjs',
+        path: join(__dirname, '../upm/Samples~/Sample4/Assets/Typescripts/nodemodule-loader/'),
         library: {
             type: 'module'
         }

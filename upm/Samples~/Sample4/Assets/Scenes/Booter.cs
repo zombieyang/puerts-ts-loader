@@ -50,12 +50,9 @@ public class NodeModuleLoader: IResolvableLoader, ILoader, IBuiltinLoadedListene
     {
 		if (specifier.StartsWith("file:")) {
             specifier = specifier.Replace("file:///", "").Replace("file:/", "").Replace("file:/", "");
-            if (Application.platform != RuntimePlatform.WindowsEditor && Application.platform == RuntimePlatform.WindowsPlayer) 
+            if (Application.platform != RuntimePlatform.WindowsEditor && Application.platform != RuntimePlatform.WindowsPlayer) 
                 specifier = "/" + specifier;
             debugpath = specifier;
-            UnityEngine.Debug.Log(specifier);
-            UnityEngine.Debug.Log(File.ReadAllText(specifier));
-            UnityEngine.Debug.Log("===");
             return File.ReadAllText(specifier);
         }
         debugpath = "";
