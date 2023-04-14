@@ -4473,7 +4473,48 @@
       }
       return decodeURIComponent(pathname);
   }
-  
+  const forwardSlashRegEx = /\//g;
+  const CHAR_LOWERCASE_A = 97
+  const CHAR_LOWERCASE_Z = 122
+
+  function getPathFromURLWin32(url) {
+    const hostname = url.hostname;
+    let pathname = url.pathname;
+    for (let n = 0; n < pathname.length; n++) {
+      if (pathname[n] === '%') {
+        const third = pathname.codePointAt(n + 2) | 0x20;
+        if ((pathname[n + 1] === '2' && third === 102) || // 2f 2F /
+            (pathname[n + 1] === '5' && third === 99)) {  // 5c 5C \
+          throw new Error('ERR_INVALID_FILE_URL_PATH: ' +
+            'must not include encoded \\ or / characters'
+          );
+        }
+      }
+    }
+    pathname = pathname.replace(forwardSlashRegEx, '\\');
+    pathname = decodeURIComponent(pathname);
+    if (hostname !== '') {
+      // If hostname is set, then we have a UNC path
+      // Pass the hostname through domainToUnicode just in case
+      // it is an IDN using punycode encoding. We do not need to worry
+      // about percent encoding because the URL parser will have
+      // already taken care of that for us. Note that this only
+      // causes IDNs with an appropriate `xn--` prefix to be decoded.
+
+      // TODO by zombieyang
+      // return `\\\\${domainToUnicode(hostname)}${pathname}`;
+      throw new Error('hostname must be empty: ' + hostname);
+    }
+    // Otherwise, it's a local path that requires a drive letter
+    const letter = pathname.codePointAt(1) | 0x20;
+    const sep = pathname[2];
+    if (letter < CHAR_LOWERCASE_A || letter > CHAR_LOWERCASE_Z ||   // a..z A..Z
+        (sep !== ':')) {
+      throw new new Error('ERR_INVALID_FILE_URL_PATH' + ': must be absolute');
+    }
+    return pathname.slice(1);
+  }
+
   function fileURLToPath(path) {
       if (typeof path === 'string')
           path = new URL(path);
@@ -4481,9 +4522,12 @@
           throw new Error(['ERR_INVALID_ARG_TYPE ', 'path', ['string', 'URL'], path].join(' '));
       if (path.protocol !== 'file:')
           throw new Error(['ERR_INVALID_URL_SCHEME ', 'file'].join(' '));
-      return getPathFromURLPosix(path);
+      return isWindows() ? getPathFromURLWin32(path) : getPathFromURLPosix(path);
   }
   
+  function isWindows() {
+    return CS.UnityEngine.Application.platform == 7
+  }
   
   
   /***/ }),
@@ -4664,6 +4708,85 @@
         'DEP0151'
       );
   }
+  const protocolHandlers = Object.assign(Object.create(null), {
+    'file:': getFileProtocolModuleFormat,
+    'node:'() { return 'builtin'; },
+  });
+  const extensionFormatMap = {
+    '__proto__': null,
+    '.cjs': 'commonjs',
+    '.js': 'module',
+    '.json': 'json',
+    '.mjs': 'module',
+  };
+  const legacyExtensionFormatMap = {
+    '__proto__': null,
+    '.cjs': 'commonjs',
+    '.js': 'commonjs',
+    '.json': 'commonjs',
+    '.mjs': 'module',
+    '.node': 'commonjs',
+  };
+  function getLegacyExtensionFormat(ext) {
+    return legacyExtensionFormatMap[ext];
+  }
+  /**
+   * move from get_format.js by zombieyang
+   * @param {URL | URL['href']} url
+   * @param {{parentURL: string}} context
+   * @returns {Promise<string> | string | undefined} only works when enabled
+   */
+  function defaultGetFormatWithoutErrors(url, context) {
+    const parsed = new URL(url);
+    if (!ObjectPrototypeHasOwnProperty(protocolHandlers, parsed.protocol))
+      return null;
+    return protocolHandlers[parsed.protocol](parsed, context, true);
+  }
+  /**
+   * @param {URL} url
+   * @returns {PackageType}
+   */
+  function getPackageType(url) {
+    const packageConfig = getPackageScopeConfig(url);
+    return packageConfig.type;
+  }
+  /**
+   * @param {URL} url
+   * @param {{parentURL: string}} context
+   * @param {boolean} ignoreErrors
+   * @returns {string}
+   */
+  function getFileProtocolModuleFormat(url, context, ignoreErrors) {
+    const filepath = fileURLToPath(url);
+    const ext = filepath.split(".").pop();
+    // const ext = extname(filepath);
+    if (ext === '.js') {
+      return getPackageType(url) === 'module' ? 'module' : 'commonjs';
+    }
+  
+    const format = extensionFormatMap[ext];
+    if (format) return format;
+  
+    // if (experimentalSpecifierResolution !== 'node') {
+    //   // Explicit undefined return indicates load hook should rerun format check
+    //   if (ignoreErrors) return undefined;
+    //   let suggestion = '';
+    //   if (getPackageType(url) === 'module' && ext === '') {
+    //     const config = getPackageScopeConfig(url);
+    //     const fileBasename = basename(filepath);
+    //     const relativePath = StringPrototypeSlice(relative(config.pjsonPath, filepath), 1);
+    //     suggestion = 'Loading extensionless files is not supported inside of ' +
+    //       '"type":"module" package.json contexts. The package.json file ' +
+    //       `${config.pjsonPath} caused this "type":"module" context. Try ` +
+    //       `changing ${filepath} to have a file extension. Note the "bin" ` +
+    //       'field of package.json can point to a file with an extension, for example ' +
+    //       `{"type":"module","bin":{"${fileBasename}":"${relativePath}.js"}}`;
+    //   }
+    //   throw new ERR_UNKNOWN_FILE_EXTENSION(ext, filepath, suggestion);
+    // }
+  
+    return getLegacyExtensionFormat(ext) ?? null;
+  }
   
   
   const packageJSONCache = new SafeMap(); /* string -> PackageConfig */
@@ -4767,7 +4890,7 @@
    * @returns {boolean}
    */
   function fileExists(url) {
-    return CS.System.IO.Path.IsExists(url)
+    return CS.System.IO.File.Exists(fileURLToPath(url))
   }
   
   /**

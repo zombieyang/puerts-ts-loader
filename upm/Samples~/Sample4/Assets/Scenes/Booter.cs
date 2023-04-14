@@ -11,7 +11,7 @@ public class NodeModuleLoader: IResolvableLoader, ILoader, IBuiltinLoadedListene
     private string _nodeModulePath;
     public NodeModuleLoader(string nodeModulePath) 
     {
-        _nodeModulePath = PathHelper.normalize(Path.Combine(nodeModulePath, "node_modules"));
+        _nodeModulePath = PathHelper.normalize(Path.Combine(nodeModulePath, "node_modules")).Replace("\\", "/");
     }
     private Func<string, string, string> ResolvePackageFunc;
 	private bool isBuiltinLoaded = false;
@@ -27,7 +27,6 @@ public class NodeModuleLoader: IResolvableLoader, ILoader, IBuiltinLoadedListene
 //        https://nodejs.org/dist/latest-v18.x/docs/api/esm.html#resolver-algorithm-specification
         if (PathHelper.IsRelative(specifier)) 
         {
-            UnityEngine.Debug.Log(specifier + " - " + referrer + " ? " + _nodeModulePath + " = " + referrer.Contains(_nodeModulePath));
             if (referrer.Contains(_nodeModulePath)) return PathHelper.normalize(Path.Combine(PathHelper.Dirname(referrer), specifier));
             else return null;
         }
@@ -49,10 +48,15 @@ public class NodeModuleLoader: IResolvableLoader, ILoader, IBuiltinLoadedListene
 
     public string ReadFile(string specifier, out string debugpath)
     {
-		if (specifier.StartsWith("file://")) {
-            string abspath = specifier.Substring(7);
-            debugpath = abspath;
-            return File.ReadAllText(abspath);
+		if (specifier.StartsWith("file:")) {
+            specifier = specifier.Replace("file:///", "").Replace("file:/", "").Replace("file:/", "");
+            if (Application.platform != RuntimePlatform.WindowsEditor && Application.platform == RuntimePlatform.WindowsPlayer) 
+                specifier = "/" + specifier;
+            debugpath = specifier;
+            UnityEngine.Debug.Log(specifier);
+            UnityEngine.Debug.Log(File.ReadAllText(specifier));
+            UnityEngine.Debug.Log("===");
+            return File.ReadAllText(specifier);
         }
         debugpath = "";
         return null;
