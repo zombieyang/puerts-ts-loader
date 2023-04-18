@@ -14,11 +14,13 @@ public class NodeModuleLoader: IResolvableLoader, ILoader, IBuiltinLoadedListene
         _nodeModulePath = PathHelper.normalize(Path.Combine(nodeModulePath, "node_modules")).Replace("\\", "/");
     }
     private Func<string, string, string> ResolvePackageFunc;
+    private Func<string, string> LoadPackageFunc;
 	private bool isBuiltinLoaded = false;
     public void OnBuiltinLoaded(JsEnv env)
     {
 		isBuiltinLoaded = true;
         ResolvePackageFunc = env.ExecuteModule<Func<string, string, string>>("nodemodule-loader/resolve.mjs", "packageResolve");
+        LoadPackageFunc = env.ExecuteModule<Func<string, string>>("nodemodule-loader/resolve.mjs", "packageLoad");
     }
 
     public string Resolve(string specifier, string referrer)
@@ -49,11 +51,9 @@ public class NodeModuleLoader: IResolvableLoader, ILoader, IBuiltinLoadedListene
     public string ReadFile(string specifier, out string debugpath)
     {
 		if (specifier.StartsWith("file:")) {
-            specifier = specifier.Replace("file:///", "").Replace("file:/", "").Replace("file:/", "");
-            if (Application.platform != RuntimePlatform.WindowsEditor && Application.platform != RuntimePlatform.WindowsPlayer) 
-                specifier = "/" + specifier;
             debugpath = specifier;
-            return File.ReadAllText(specifier);
+            string content = LoadPackageFunc(specifier);
+            return content;
         }
         debugpath = "";
         return null;

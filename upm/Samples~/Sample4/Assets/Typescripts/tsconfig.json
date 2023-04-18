@@ -14,13 +14,8 @@
         ],
         "paths": {
             "*": [
-                "../../Puer-Project/*"
+                "../../Puer-Project/node_modules/*"
             ]
         }
-    },
-    "references": [
-        {
-            "path": "../../Puer-Project"
-        }
-    ]
+    }
 }

@@ -9,9 +9,5 @@
         "noImplicitAny": true,
         "allowJs": true,
         "composite": true,
-        "typeRoots": [
-            "./node_modules",
-            "./node_modules/@types",
-        ],
     }
 }

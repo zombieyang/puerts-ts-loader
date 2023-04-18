@@ -156,7 +156,8 @@ function getPackageType(url) {
  */
 function getFileProtocolModuleFormat(url, context, ignoreErrors) {
   const filepath = fileURLToPath(url);
-  const ext = filepath.split(".").pop();
+  let ext = filepath.split(".").pop();
+  if (ext) ext = "." + ext
   // const ext = extname(filepath);
   if (ext === '.js') {
     return getPackageType(url) === 'module' ? 'module' : 'commonjs';
@@ -199,8 +200,7 @@ function getPackageConfig(path, specifier, base) {
   if (existing !== undefined) {
     return existing;
   }
-  const source = CS.System.IO.File.ReadAllText(path);
-  if (source === undefined) {
+  if (!CS.System.IO.File.Exists(path)) {
     const packageConfig = {
       pjsonPath: path,
       exists: false,
@@ -213,6 +213,7 @@ function getPackageConfig(path, specifier, base) {
     packageJSONCache.set(path, packageConfig);
     return packageConfig;
   }
+  const source = CS.System.IO.File.ReadAllText(path);
 
   let packageJSON;
   try {
@@ -750,4 +751,22 @@ function packageResolve(specifier, base) {
   throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base));
 }
 
-export { packageResolve }
+function packageLoad(url) {
+  const path = fileURLToPath(url);
+  if (defaultGetFormatWithoutErrors(url) == 'commonjs') {
+    const cjsModule = globalThis['require'](path);
+    const names = Object.getOwnPropertyNames(cjsModule);
+    let ret = `const mod = require('${path.replaceAll('\\', '\\\\')}')\n`;
+    if (names.indexOf('default') == -1) ret += 'export default mod\n'
+    return ret + names.map((name, index) => {
+      if (name == 'default') return `export default mod['${name}']`
+      return `const member${index} = mod['${name}']; export { member${index} as ${name} }`
+    }).join('\n')
+
+  } else {
+    return CS.System.IO.File.ReadAllText(path)
+  }
+}
+
+
+export { packageResolve, packageLoad }
