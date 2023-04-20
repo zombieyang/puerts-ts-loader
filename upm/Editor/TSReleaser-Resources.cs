@@ -1,5 +1,6 @@
 using UnityEditor;
 using System;
+using System.Linq;
 using System.IO;
 
 namespace Puerts.TSLoader
@@ -31,6 +32,8 @@ namespace Puerts.TSLoader
         public static void ReleaseAllTS(string saveTo, Func<int, string> outputRelativeCallback = null) 
         {
             string[] allPaths = TSDirectoryCollector.GetAllDirectoryAbsPath();
+            allPaths = allPaths.Where(path => !path.Contains("/Editor/")).ToArray();
+
             if (_TSCRunner == null) 
             {
                 _TSCRunner = env.Eval<Action<string, string[], Func<int, string>>>(@" 

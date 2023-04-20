@@ -7,7 +7,7 @@ module.exports = {
     entry: './resolve.js',
     output: {
         filename: 'resolve.mjs',
-        path: join(__dirname, '../upm/Samples~/Sample4/Assets/Typescripts/nodemodule-loader/'),
+        path: join(__dirname, '../upm/Runtime/NodeModuleLoader/Typescripts/nodemodule-loader/'),
         library: {
             type: 'module'
         }

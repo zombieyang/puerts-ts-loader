@@ -14,6 +14,7 @@ public class Main : MonoBehaviour
     {
         env = new JsEnv(new TSLoader(), 9222);
         Application.runInBackground = true;
+        UnityEngine.Debug.Log('please connect inspector');
         env.WaitDebugger();
 
         env.ExecuteModule(@"main.mjs");

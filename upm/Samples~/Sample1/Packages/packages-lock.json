@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "com.tencent.puerts.core": {
-      "version": "2.0.0-pre.2",
+      "version": "2.0.0-pre.3",
       "depth": 1,
       "source": "registry",
       "dependencies": {},
@@ -12,7 +12,7 @@
       "depth": 0,
       "source": "local",
       "dependencies": {
-        "com.tencent.puerts.core": "2.0.0-pre.2"
+        "com.tencent.puerts.core": "2.0.0-pre.3"
       }
     },
     "com.unity.2d.sprite": {
@@ -52,6 +52,13 @@
       "dependencies": {},
       "url": "https://packages.unity.cn"
     },
+    "com.unity.editorcoroutines": {
+      "version": "1.0.0",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.cn"
+    },
     "com.unity.ext.nunit": {
       "version": "1.0.6",
       "depth": 1,
@@ -68,7 +75,7 @@
         "com.unity.ide.rider": "3.0.18",
         "com.unity.ide.vscode": "1.2.5",
         "com.unity.editorcoroutines": "1.0.0",
-        "com.unity.performance.profile-analyzer": "1.1.1",
+        "com.unity.performance.profile-analyzer": "1.2.2",
         "com.unity.test-framework": "1.1.31",
         "com.unity.testtools.codecoverage": "1.2.2"
       }
@@ -105,6 +112,13 @@
       "dependencies": {},
       "url": "https://packages.unity.cn"
     },
+    "com.unity.performance.profile-analyzer": {
+      "version": "1.2.2",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.cn"
+    },
     "com.unity.purchasing": {
       "version": "4.5.2",
       "depth": 0,
@@ -121,24 +135,32 @@
       "url": "https://packages.unity.cn"
     },
     "com.unity.services.analytics": {
-      "version": "4.0.1",
+      "version": "4.3.0",
       "depth": 1,
       "source": "registry",
       "dependencies": {
         "com.unity.ugui": "1.0.0",
-        "com.unity.services.core": "1.4.0"
+        "com.unity.services.core": "1.4.0",
+        "com.unity.nuget.newtonsoft-json": "3.0.2"
       },
       "url": "https://packages.unity.cn"
     },
     "com.unity.services.core": {
-      "version": "1.4.0",
-      "depth": 2,
+      "version": "1.7.1",
+      "depth": 1,
       "source": "registry",
       "dependencies": {
         "com.unity.modules.unitywebrequest": "1.0.0",
         "com.unity.nuget.newtonsoft-json": "3.0.2",
         "com.unity.modules.androidjni": "1.0.0"
       },
+      "url": "https://packages.unity.cn"
+    },
+    "com.unity.settings-manager": {
+      "version": "1.0.3",
+      "depth": 2,
+      "source": "registry",
+      "dependencies": {},
       "url": "https://packages.unity.cn"
     },
     "com.unity.test-framework": {
@@ -149,6 +171,16 @@
         "com.unity.ext.nunit": "1.0.6",
         "com.unity.modules.imgui": "1.0.0",
         "com.unity.modules.jsonserialize": "1.0.0"
+      },
+      "url": "https://packages.unity.cn"
+    },
+    "com.unity.testtools.codecoverage": {
+      "version": "1.2.2",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.test-framework": "1.0.16",
+        "com.unity.settings-manager": "1.0.1"
       },
       "url": "https://packages.unity.cn"
     },

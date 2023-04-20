@@ -26,7 +26,7 @@ function compile(saveTo: string, refs: string[], outputRelativePathCallback: (in
                 config.module = ts.ModuleKind.ES2015
             }
             return ts.createEmitAndSemanticDiagnosticsBuilderProgram.apply(ts, args);
-        }, function (err) { console.warn(err.messageText) }),
+        }, function (err) { console.warn(JSON.stringify(err.messageText)) }),
         ["/puer-mock/tsconfig.json"], {}
     );
     return builder.build() == 0;

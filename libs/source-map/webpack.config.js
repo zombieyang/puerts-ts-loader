@@ -7,7 +7,7 @@ module.exports = {
     },
     output: {
         filename: '[name].gen.mjs',
-        path: __dirname + '/upm/Editor/ConsoleRedirect/Typescripts',
+        path: __dirname + '../upm/Editor/ConsoleRedirect/Typescripts',
         library: {
             type: 'module'
         }
