@@ -8,6 +8,7 @@
 > 其他功能
   * 在Runtime下，依然可以使用自己Loader，无缝切换
   * 在Runtime下，以链式组织多个Loader
+  * 自带了一个子loader：NodeModuleLoader，可以直接加载node_modules里的包
   * 可在Asset面板中直接创建Typescript，就像C#一样。
   * 将Typescript文件视为ScriptableObject，可拖入Editor面板上。
   * 可以编写自己的工具，通过TSLoader的API，在发布前将Typescript统一编译为js文件。
