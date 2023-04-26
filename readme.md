@@ -40,7 +40,7 @@ env.ExecuteModule("main.mts");
   该Project使用webpack，将node_modules里的代码打包成为单独的JS（为了解决node_modules不好发布的问题）。这些单独的JS再被TSLoader控制中的TS所使用。
 3. Sample 3 - 调试器、sourceMap、ConsoleRedirect的测试
 4. Sample 4 - 直接加载node_modules
-  演示了ts里如何直接加载node_modules。这个方法仅在Editor下测试过，且windows下尚不能加载带.node（C++插件）的模块
+  演示了ts里如何直接加载node_modules。这个方法适合用于Editor，目前仅在Editor下测试过。
 5. [puerts-webgl](https://github.com/zombieyang/puerts_unity_webgl_demo) b的Sample 2/8/9 都使用了ts-loader
 
 
