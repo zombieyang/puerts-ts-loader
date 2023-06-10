@@ -34,15 +34,18 @@ env.ExecuteModule("main.mts");
 ## 详细示例
 本包遵循UPM包结构。示例位于`upm/Samples`
 1. Sample 1 - 简单示例
-  最简单的示例，Editor下加载Assets目录下的TS，Runtime下通过链式组织两个Loader完成加载工作。
-  且通过PUERTS_TSLOADER_DISABLE_EDITOR_FEATURE，可以在Editor内测试Runtime下的Loader的效果。
+
+    最简单的示例，Editor下加载Assets目录下的TS，Runtime下通过链式组织两个Loader完成加载工作。
+    且通过PUERTS_TSLOADER_DISABLE_EDITOR_FEATURE，可以在Editor内测试Runtime下的Loader的效果。
 2. Sample 2 - 与webpack和node_modules配合
-  演示了如何添加一个Assets目录外的TSProject。
-  该Project使用webpack，将node_modules里的代码打包成为单独的JS（为了解决node_modules不好发布的问题）。这些单独的JS再被TSLoader控制中的TS所使用。
+
+    演示了如何添加一个Assets目录外的TSProject。
+    该Project使用webpack，将node_modules里的代码打包成为单独的JS（为了解决node_modules不好发布的问题）。这些单独的JS再被TSLoader控制中的TS所使用。
 3. Sample 3 - 调试器、sourceMap、ConsoleRedirect的测试
 4. Sample 4 - 直接加载node_modules
-  演示了ts里如何直接加载node_modules。这个方法适合用于Editor，目前仅在Editor下测试过。
-5. [puerts-webgl](https://github.com/zombieyang/puerts_unity_webgl_demo) b的Sample 2/8/9 都使用了ts-loader
+
+    演示了ts里如何直接加载node_modules。这个方法适合用于Editor，目前仅在Editor下测试过。
+5. [puerts-webgl](https://github.com/zombieyang/puerts_unity_webgl_demo) 的Sample 2/8/9 都使用了ts-loader
 
 
 ## 迁移指南
