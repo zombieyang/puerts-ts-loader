@@ -36,20 +36,46 @@ public class NodeModuleLoader: IResolvableLoader, ILoader, IBuiltinLoadedListene
         {
             return "node:" + specifier;
         }
+        if (specifier.StartsWith("node:")) return specifier;
         
         return ResolvePackageFunc(specifier, "file://" + _nodeModulePath);
     }
+    private static string[] nodeBuiltin = new string[] 
+    {
+        "fs",
+        "crypto",
+        "dns",
+        "http",
+        "http2",
+        "https",
+        "net",
+        "os",
+        "path",
+        "querystring",
+        "stream",
+        "repl",
+        "readline",
+        "tls",
+        "dgram",
+        "url",
+        "v8",
+        "vm",
+        "zlib",
+        "util",
+        "assert",
+        "events",
+        "tty",
+    };
 	private bool IsNodeBuiltin(string specifier) 
 	{
-		return specifier == "path" || 
-		specifier == "url";
-	}
+		return Array.IndexOf(nodeBuiltin, specifier) != -1;
+    }
 
     public bool FileExists(string specifier) { return true; }
 
     public string ReadFile(string specifier, out string debugpath)
     {
-		if (specifier.StartsWith("file:")) {
+		if (specifier.StartsWith("file:") || specifier.StartsWith("node:")) {
             debugpath = specifier;
             string content = LoadPackageFunc(specifier);
             return content;

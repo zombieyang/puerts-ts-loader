@@ -5357,10 +5357,13 @@ function packageResolve(specifier, base) {
 }
 
 function packageLoad(url) {
-  const path = fileURLToPath(url);
-  if (defaultGetFormatWithoutErrors(url) == 'commonjs') {
-    const cjsModule = globalThis['require'](path);
-    const names = Object.getOwnPropertyNames(cjsModule);
+  const path = url.startsWith('node:') ? url : fileURLToPath(url);
+  if (defaultGetFormatWithoutErrors(url) == 'commonjs' || url.startsWith('node:')) {
+    let names = ['default']
+    try {
+      const cjsModule = globalThis['require'](path);
+      names = Object.getOwnPropertyNames(cjsModule);
+    } catch(e) { }
     let ret = `const mod = require('${path.replaceAll('\\', '\\\\')}')\n`;
     if (names.indexOf('default') == -1) ret += 'export default mod\n'
     return ret + names.map((name, index) => {
