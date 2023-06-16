@@ -36,7 +36,9 @@ namespace Puerts.TSLoader
                     return new string[] { 
                         specifier,
                         specifier + ".js",
-                        specifier + ".ts"
+                        specifier + ".ts",
+                        specifier + "/index.js",
+                        specifier + "/index.ts"
                     };
             }
         }
