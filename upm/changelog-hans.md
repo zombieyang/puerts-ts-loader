@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 you can get the english version change log at [Github Release](https://github.com/Tencent/puerts/releases)
 
+## [2.0.0-pre.5] - 2023-06-16
+1. 兼容 core@2.0.0-pre.5
+2. 支持import目录
+
 ## [1.1.0-rc.0] - 2023-04-20
 1. 支持了 NodeModuleLoader, 添加Sample4。可以让你在Editor下直接import node_modules
 2. ts-loader现在需求puerts.core@2.0.0-pre.3及更高版本.
