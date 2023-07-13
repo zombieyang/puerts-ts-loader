@@ -45,7 +45,7 @@ function compile(saveTo, refs, outputRelativePathCallback) {
     }), function (...args) {
         const config = args[1];
         if (config) {
-            config.outDir = (0, path_1.join)(saveTo, outputRelativePathCallback(tsconfigIndex));
+            config.outDir = (0, path_1.join)(saveTo, outputRelativePathCallback(tsconfigIndex++));
             config.module = ts.ModuleKind.ES2015;
         }
         return ts.createEmitAndSemanticDiagnosticsBuilderProgram.apply(ts, args);

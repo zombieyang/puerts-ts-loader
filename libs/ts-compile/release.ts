@@ -22,7 +22,7 @@ function compile(saveTo: string, refs: string[], outputRelativePathCallback: (in
         }), function (...args) {
             const config = args[1];
             if (config) {
-                config.outDir = join(saveTo, outputRelativePathCallback(tsconfigIndex));
+                config.outDir = join(saveTo, outputRelativePathCallback(tsconfigIndex++));
                 config.module = ts.ModuleKind.ES2015
             }
             return ts.createEmitAndSemanticDiagnosticsBuilderProgram.apply(ts, args);
