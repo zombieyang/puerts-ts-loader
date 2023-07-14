@@ -76,6 +76,10 @@ namespace Puerts.TSLoader
             {
                 // UnityEngine.Debug.Log(specifier + " use default loader");
                 if (puerDefaultLoader == null) puerDefaultLoader = new Puerts.DefaultLoader();
+                if (PathHelper.IsRelative(specifier))
+                {
+                    specifier = PathHelper.normalize(PathHelper.Dirname(referrer) + "/" + specifier);
+                }
                 return puerDefaultLoader.FileExists(specifier) ? specifier : null;
             }
             else 
