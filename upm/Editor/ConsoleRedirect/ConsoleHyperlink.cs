@@ -105,7 +105,11 @@ namespace UnityEditor.Console
 
         public static bool OpenFileInIDE(string filepath, int line, int column)
         {
-            return CodeEditor.CurrentEditor.OpenProject(filepath, line, column);
+            return CodeEditor.CurrentEditor.OpenProject(
+                System.IO.Path.GetFullPath(filepath), 
+                line, 
+                column
+            );
         }
     }
 }
