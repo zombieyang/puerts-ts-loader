@@ -1,21 +1,40 @@
+const webpack = require('webpack')
+
 module.exports = {
     mode: 'production',
 
-    target: 'node16',
+    target: 'es2022',
     entry: {
         'source-map-support': './source-map-support-entry.js'
     },
     output: {
         filename: '[name].gen.mjs',
-        path: __dirname + '../upm/Editor/ConsoleRedirect/Typescripts',
+        path: __dirname + '/../../upm/Editor/ConsoleRedirect/Typescripts',
         library: {
             type: 'module'
         }
     },
     experiments: { outputModule: true },
     optimization: { minimize: false },
+    plugins: [
+        new webpack.NormalModuleReplacementPlugin(
+          /^path$/,
+          function (resource) {
+            console.log(resource.request)
+            resource.request = __dirname + '/path.js'
+          }
+        ),
+        new webpack.NormalModuleReplacementPlugin(
+          /^fs$/,
+          function (resource) {
+            console.log(resource.request)
+            resource.request = __dirname + '/fs.js'
+          }
+        ),
+    ],
     externals: [
-        'fs',
+        // 'fs',
+        // 'path',
         'crypto',
         'dns',
         'http',
@@ -23,7 +42,6 @@ module.exports = {
         'https',
         'net',
         'os',
-        'path',
         'querystring',
         'stream',
         'repl',

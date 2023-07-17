@@ -14,6 +14,7 @@
   "dependencies": {
     "@types/glob": "^8.0.0",
     "@types/node": "^18.11.13",
+    "buffer": "^6.0.3",
     "glob": "^8.0.3",
     "source-map-support": "^0.5.21",
     "typescript": "^4.9.3",
