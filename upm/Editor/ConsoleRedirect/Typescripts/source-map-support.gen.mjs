@@ -3905,14 +3905,33 @@ exports.SourceMapConsumer = __webpack_require__(771).SourceMapConsumer;
 /***/ 231:
 /***/ ((module) => {
 
-module.exports = require("fs");
+module.exports = {
+  existsSync(path) {
+      return CS.System.IO.File.Exists(path);
+  },
+  readFileSync(path) {
+      return CS.System.IO.File.ReadAllText(path);
+  },
+};
 
 /***/ }),
 
 /***/ 423:
 /***/ ((module) => {
 
-module.exports = require("path");
+module.exports = {
+  dirname(path) {
+      return CS.System.IO.Path.GetDirectoryName(path);
+  },
+  resolve(dir, url) {
+      url = url.replace(/\\/g, "/");
+      while (url.startsWith("../")) {
+          dir = CS.System.IO.Path.GetDirectoryName(dir);
+          url = url.substr(3);
+      }
+      return CS.System.IO.Path.Combine(dir, url);
+  },
+};
 
 /***/ })
 
