@@ -8,9 +8,12 @@
 > 其他功能
   * 在Runtime下，依然可以使用自己Loader，无缝切换
   * 在Runtime下，以链式组织多个Loader
+  * 自带了一个子loader：NodeModuleLoader，可以直接加载node_modules里的包
   * 可在Asset面板中直接创建Typescript，就像C#一样。
   * 将Typescript文件视为ScriptableObject，可拖入Editor面板上。
   * 可以编写自己的工具，通过TSLoader的API，在发布前将Typescript统一编译为js文件。
+  
+[我为什么要做TSLoader](https://zhuanlan.zhihu.com/p/614569767)
 
 ## 如何开始
 1. 确认你已通过upm方式安装好PuerTS，可以用openupm、也可以clone后add from file。
@@ -28,16 +31,22 @@
 var env = new Puerts.JsEnv(new Puerts.TSLoader());
 env.ExecuteModule("main.mts");
 ```
+> 如果PuerTS本体不使用UPM安装，可以自行clone ts-loader项目并将upm目录添加至Unity。且注意PuerTS本体需要用Node.js版
 ## 详细示例
 本包遵循UPM包结构。示例位于`upm/Samples`
 1. Sample 1 - 简单示例
+
     最简单的示例，Editor下加载Assets目录下的TS，Runtime下通过链式组织两个Loader完成加载工作。
     且通过PUERTS_TSLOADER_DISABLE_EDITOR_FEATURE，可以在Editor内测试Runtime下的Loader的效果。
 2. Sample 2 - 与webpack和node_modules配合
+
     演示了如何添加一个Assets目录外的TSProject。
-该Project使用webpack，将node_modules里的代码打包成为单独的JS（为了解决node_modules不好发布的问题）。这些单独的JS再被TSLoader控制中的TS所使用。
+    该Project使用webpack，将node_modules里的代码打包成为单独的JS（为了解决node_modules不好发布的问题）。这些单独的JS再被TSLoader控制中的TS所使用。
 3. Sample 3 - 调试器、sourceMap、ConsoleRedirect的测试
-4. [puerts-webgl](https://github.com/zombieyang/puerts_unity_webgl_demo) b的Sample 2/8/9 都使用了ts-loader
+4. Sample 4 - 直接加载node_modules
+
+    演示了ts里如何直接加载node_modules。这个方法适合用于Editor，目前仅在Editor下测试过。
+5. [puerts-webgl](https://github.com/zombieyang/puerts_unity_webgl_demo) 的Sample 2/8/9 都使用了ts-loader
 
 
 ## 迁移指南
@@ -67,7 +76,7 @@ tsconfig下也可以放置js文件，且能像上述方式一样加载，但需�
 > 当前版本请勿在一个tsconfig控制的范围内添加另一个tsconfig
 
 ## tsconfig间引用说明
-ts-loader本身支持不通TS Project之间的ts互相`import`，但你需要做一些配置才能让编辑器的`tsc`给你正确的代码提示
+ts-loader本身支持tsconfig之间的ts互相`import`，但你需要做一些配置才能让编辑器的`tsc`给你正确的提示
 1. project references
    
    这个是与`compilerOptions`同级的配置，若不配置，则无法获得别的ts导出的内容。配置方式如下：
@@ -103,4 +112,4 @@ TSLoader内置了一个`TSReleaser-Resources.cs`，会将所有TSLoader所管理
 * 解除对Node的依赖
 
 ## 鸣谢
-@throw-out 提供了sourceMap和ConsoleRedirect的支持。
+[@throw-out](https://github.com/throw-out) 提供了最为关键的sourceMap和ConsoleRedirect的支持。

@@ -20,17 +20,18 @@
 2. 通过upm方式加载本包，加载方式请与PuerTS保持一致。本包的openupm包名为`com.tencent.puerts.ts-loader`
 3. 创建这样的目录结构
   ```
-    |
-    |- TypeScripts
+    |- Assets
+    |-- TypeScripts
     |--- tsconfig.json
     |--- main.mts
-    |- Script.cs (是个MonoBehaviour)
+    |-- Script.cs (是个MonoBehaviour)
   ```
 5. 将Script.cs拖入场景，在Script.cs的Start()使用如下代码即可看到效果
 ```
 var env = new Puerts.JsEnv(new Puerts.TSLoader());
 env.ExecuteModule("main.mts");
 ```
+> 如果PuerTS本体不使用UPM安装，可以自行clone ts-loader项目并将upm目录添加至Unity。且注意PuerTS本体需要用Node.js版
 ## 详细示例
 本包遵循UPM包结构。示例位于`upm/Samples`
 1. Sample 1 - 简单示例
