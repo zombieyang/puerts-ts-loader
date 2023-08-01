@@ -17,11 +17,11 @@
 2. 通过upm方式加载本包，加载方式请与PuerTS保持一致。本包的openupm包名为`com.tencent.puerts.ts-loader`
 3. 创建这样的目录结构
   ```
-    |
-    |- TypeScripts
+    |- Assets
+    |-- TypeScripts
     |--- tsconfig.json
     |--- main.mts
-    |- Script.cs (是个MonoBehaviour)
+    |-- Script.cs (是个MonoBehaviour)
   ```
 5. 将Script.cs拖入场景，在Script.cs的Start()使用如下代码即可看到效果
 ```
@@ -67,7 +67,7 @@ tsconfig下也可以放置js文件，且能像上述方式一样加载，但需�
 > 当前版本请勿在一个tsconfig控制的范围内添加另一个tsconfig
 
 ## tsconfig间引用说明
-ts-loader本身支持tsconfig之间的ts互相`import`，但你需要做一些配置才能让编辑器的`tsc`给你正确的提示
+ts-loader本身支持不通TS Project之间的ts互相`import`，但你需要做一些配置才能让编辑器的`tsc`给你正确的代码提示
 1. project references
    
    这个是与`compilerOptions`同级的配置，若不配置，则无法获得别的ts导出的内容。配置方式如下：
