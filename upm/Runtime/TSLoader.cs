@@ -125,7 +125,7 @@ namespace Puerts.TSLoader
         {
 #if UNITY_EDITOR && !PUERTS_TSLOADER_DISABLE_EDITOR_FEATURE
             string filepath = specifier;
-            if (filepath.EndsWith("ts")) 
+            if (filepath.EndsWith(".ts") || filepath.EndsWith(".mts")) 
             {
                 debugpath = filepath; 
                 return TSDirectoryCollector.EmitTSFile(filepath); 
