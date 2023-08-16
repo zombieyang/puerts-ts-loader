@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 you can get the english version change log at [Github Release](https://github.com/Tencent/puerts/releases)
 
+## [2.0.1] - 2023-08-14
+1. compat with core@2.0.1
+2. fix bug for loading `node:events`
+3. fix bug for sourcemap loading
+
 ## [2.0.0] - 2023-07-31
 1. compat with core@2.0.0
 
