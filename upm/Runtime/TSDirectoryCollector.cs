@@ -7,7 +7,6 @@ using System.Collections.Generic;
 
 namespace Puerts.TSLoader
 {
-    [InitializeOnLoad]
     public class TSDirectoryCollector
     {
         protected static Dictionary<string, TSCompiler> tsCompilers = new Dictionary<string, TSCompiler>();
@@ -43,8 +42,10 @@ namespace Puerts.TSLoader
             }
         }
 
-        static TSDirectoryCollector() 
+        private static bool _inited = false;
+        public static void InitTSDirectoryCollector() 
         {
+            if (_inited) return;
             var tsConfigList = AssetDatabase
                 .FindAssets("tsconfig t:textAsset")
                 .Select(guid => AssetDatabase.GUIDToAssetPath(guid))
@@ -54,10 +55,13 @@ namespace Puerts.TSLoader
                 var absPath = Path.GetFullPath(tsConfigPath);
                 AddTSCompiler(Path.GetDirectoryName(absPath));
             }
+            _inited = true;
         }
 
         public static string[] GetAllDirectoryAbsPath()
         {
+            InitTSDirectoryCollector();
+            
             return tsCompilers.Keys.ToArray();
         }
 
@@ -69,6 +73,8 @@ namespace Puerts.TSLoader
 
         public static string TryGetFullTSPath(string originSpecifier) 
         {
+            InitTSDirectoryCollector();
+
             string[] specifiers = Utils.GetMaybeRealSpecifier(originSpecifier);
             
             foreach (KeyValuePair<string, TSCompiler> item in tsCompilers)
@@ -87,6 +93,8 @@ namespace Puerts.TSLoader
 
         public static string EmitTSFile(string absPath) 
         {
+            InitTSDirectoryCollector();
+
             foreach (KeyValuePair<string, TSCompiler> item in tsCompilers)
             {
                 if (absPath.Contains(item.Key)) 

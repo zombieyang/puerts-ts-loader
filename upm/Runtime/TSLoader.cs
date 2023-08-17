@@ -2,11 +2,14 @@ using UnityEngine;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Puerts.TSLoader
 {
     public class TSLoader : Puerts.ILoader, Puerts.IResolvableLoader, Puerts.IModuleChecker, IBuiltinLoadedListener
     {
+        public static string TSLoaderPath = Path.GetFullPath("Packages/com.tencent.puerts.ts-loader");
+
         Puerts.DefaultLoader puerDefaultLoader = null;
         List<Puerts.ILoader> LoaderChain = new List<Puerts.ILoader>();
 
