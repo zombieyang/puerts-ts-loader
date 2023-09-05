@@ -16,8 +16,6 @@
 - Treat TypeScript files as ScriptableObjects, draggable onto the editor panel.
 - Develop your own tools by using TSLoader's API to uniformly compile TypeScript into JavaScript files before publishing.
 
-**[Why I Created TSLoader](https://zhuanlan.zhihu.com/p/614569767)**
-
 ## Getting Started
 
 1. Make sure that you have installed PuerTS using the UPM (Unity Package Manager), which can be done through OpenUPM or by cloning the repository and adding it from a file.
