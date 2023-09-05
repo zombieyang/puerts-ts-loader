@@ -1,4 +1,155 @@
-# TSLoader: 解决普洱下使用Typescript的大部分问题
+[跳转中文](#tsloader-解决普洱下使用typescript的大部分问题)
+
+# TSLoader: Solving Most TypeScript-related Issues in PuerTS
+
+> Core Features:
+
+- PuerTS Loader allows directly loading TypeScript in the editor.
+- No need to delve into tsconfig, ESM, CommonJS; no manual TypeScript compilation required; no need to worry about debugging aspects such as debugpath, source maps, or console navigation.
+
+> Additional Features:
+
+- Seamless switching between custom Loaders during runtime.
+- Organize multiple Loaders in a chain during runtime.
+- Includes a built-in subloader: NodeModuleLoader, capable of loading packages from node_modules directly.
+- Easily create TypeScript within the Asset panel like C#.
+- Treat TypeScript files as ScriptableObjects, draggable onto the editor panel.
+- Develop your own tools by using TSLoader's API to uniformly compile TypeScript into JavaScript files before publishing.
+
+**[Why I Created TSLoader](https://zhuanlan.zhihu.com/p/614569767)**
+
+## Getting Started
+
+1. Make sure that you have installed PuerTS using the UPM (Unity Package Manager), which can be done through OpenUPM or by cloning the repository and adding it from a file.
+2. Load this package using the UPM same as how you loaded PuerTS. The OpenUPM package name for this package is **`com.tencent.puerts.ts-loader`**.
+3. Create a directory structure like this:
+    
+    ```lua
+     |- Assets
+     |-- TypeScripts
+     |--- tsconfig.json
+     |--- main.mts
+     |-- Script.cs (a MonoBehaviour)
+    ```
+    
+4. Drag the **`Script.cs`** into your scene. In the **`Start()`** method of **`Script.cs`**, use the following code to see the effect:
+    
+    ```csharp
+    var env = new Puerts.JsEnv(new Puerts.TSLoader());
+    env.ExecuteModule("main.mts");
+    ```
+    
+
+> If PuerTS itself is not installed using UPM, you can clone the ts-loader project and add the upm directory to Unity. Please note that the PuerTS core should be the Node.js version.
+> 
+
+## Detailed Examples
+
+This package follows the UPM package structure, and examples are located in the **`upm/Samples`** directory.
+
+1. Sample 1 - Basic Example
+    
+    This is the simplest example. It loads TS files from the **`Assets`** directory in the Editor and organizes two Loaders in a chain during Runtime. You can also test the effect of Runtime Loaders within the Editor by using **`PUERTS_TSLOADER_DISABLE_EDITOR_FEATURE`**.
+    
+2. Sample 2 - Integration with webpack and node_modules
+    
+    This example demonstrates how to add a TSProject located outside the **`Assets`** directory. It uses webpack to bundle code from **`node_modules`** into separate JS files (to solve the problem of publishing **`node_modules`**). These individual JS files are then used by TS controlled by TSLoader.
+    
+3. Sample 3 - Testing Debugger, Source Maps, and Console Redirect
+4. Sample 4 - Directly Loading node_modules
+    
+    This example shows how to load **`node_modules`** directly within TS. Note: This example works in the Editor and has only been tested in the Editor environment.
+    
+5. **Samples from [puerts-webgl](https://github.com/zombieyang/puerts_unity_webgl_demo)**
+    
+    Sample 2, 8, and 9 from the **`puerts-webgl`** project all utilize **`ts-loader`**.
+    
+
+## Migration Guide
+
+Applying **`TSLoader`** to an existing PuerTS project is straightforward and should not lead to any backward compatibility issues.
+
+Firstly, if your original project did not pass a Loader when creating the JsEnv, you can simply create a **`TSLoader`** and pass it when creating the JsEnv, as shown previously.
+
+If you previously had a custom Loader, like **`new JsEnv(LoaderA)`**, you can make the following modifications:
+
+```csharp
+var loader = new TSLoader();
+loader.UseRuntimeLoader(LoaderA);
+JsEnv env = new JsEnv(loader);
+```
+
+This way, you can use **`TSLoader`** in the Editor while not affecting the usage of your existing logic.
+
+## TS Loading Explanation
+
+In **`ts-loader`**, every **`tsconfig`** and its associated directory and subdirectories are considered a **TS project** (somewhat similar to asmdef concepts). **`ts-loader`** in the Unity Editor automatically scans all directories for **`tsconfig`** files and records their locations.
+
+All TypeScript files can be loaded using their path **relative to the tsconfig.json file** with the **`ExecuteModule`** function (e.g., as shown earlier with **`main.mts`**). If you create a TypeScript file with a path relative to the **`tsconfig`** like **`./lib/sub.mts`**, you can load it using **`ExecuteModule('./lib/sub.mts')`**.
+
+Across different **`tsconfig`** files, TypeScript files can be mutually loaded. For example, a TypeScript file relative to **`tsconfig`** A, **`./main.mts`**, can be loaded using **`import './sub.mts'`** relative to **`tsconfig`** B, regardless of the locations of **`tsconfig`** A and **`tsconfig`** B. However, you need to configure your **`tsconfig`** appropriately to get code completion for TypeScript files from other **`tsconfig`** files. Refer to **[Cross `tsconfig` References](https://chat.openai.com/?model=text-davinci-002-render-sha#cross-tsconfig-references)** for more details.
+
+You can also place JavaScript files under the **`tsconfig`**, and they can be loaded in the same way as mentioned above. However, you need to add **`compilerOptions.allowJS = true`** to your **`tsconfig`** for this to work.
+
+> In the current version, avoid adding another tsconfig within the scope controlled by an existing tsconfig.
+> 
+
+## Explanation of Cross `tsconfig` References
+
+**`ts-loader`** itself supports TypeScript **`import`** statements across different **`tsconfig`** files, but you need to configure it properly to get accurate TypeScript code completion in your editor. Here's how you can set it up:
+
+1. Project References
+    
+    This configuration is at the same level as **`compilerOptions`**. Without this configuration, you won't get content exported from other TypeScript files.
+    
+    ```json
+    "references": [
+        {
+            "path": "path-to-another-tsconfig"
+        },
+        {
+            "path": "path-to-another-tsconfig"
+        }
+    ]
+    ```
+    
+2. Paths
+    
+    This configuration is within **`compilerOptions`**. If not configured, the automatically completed paths will have a lot of relative symbols, making them unusable with **`ts-loader`**.
+    
+    ```json
+    "paths": {
+        "*": [
+            "path-to-another-tsconfig/*",
+            "path-to-another-tsconfig/*"
+        ]
+    }
+    ```
+    
+3. Module
+    
+    This configuration is within **`compilerOptions`**. It is used to specify the output module format. Only when configured as **`None`** or **`commonjs`** will you get accurate code completion from your project in other places. I'm not sure if this is a bug, but this configuration will be changed to ES2015 when **`ts-loader`** processes TypeScript, so it's recommended to set it to **`None`** in your project.
+    
+
+Make sure to set up these configurations in your **`tsconfig`** files for proper cross **`tsconfig`** references and accurate code completion when using **`ts-loader`**.
+
+## Compilation During Publishing
+
+TSLoader includes a built-in **`TSReleaser-Resources.cs`** that compiles all TypeScript files managed by TSLoader and places them in the **`Gen/Resources`** directory. This allows them to be loaded by the built-in **`DefaultLoader`** in PuerTS.
+
+If you wish to publish TypeScript files managed by TSLoader in a different form, you can refer to **`ReleaseToResources.cs`**, where the **`ReleaseAllTS`** method may assist you.
+
+## TODO
+
+- Remove dependencies on Node.js
+
+## Acknowledgments
+
+Thanks for **[@throw-out](https://github.com/throw-out)** providing crucial support for source maps and ConsoleRedirect.
+
+-----
+
+<h1 id="1">TSLoader: 解决普洱下使用Typescript的大部分问题</h2>
 
 > 核心功能：
 
