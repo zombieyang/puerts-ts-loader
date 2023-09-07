@@ -1,8 +1,13 @@
 module.exports = {
-    existsSync(path) {
-        return CS.System.IO.File.Exists(path);
+    dirname(path) {
+        return CS.System.IO.Path.GetDirectoryName(path);
     },
-    readFileSync(path) {
-        return CS.System.IO.File.ReadAllText(path);
+    resolve(dir, url) {
+        url = url.replace(/\\/g, "/");
+        while (url.startsWith("../")) {
+            dir = CS.System.IO.Path.GetDirectoryName(dir);
+            url = url.substr(3);
+        }
+        return CS.System.IO.Path.Combine(dir, url);
     },
-}
+};
