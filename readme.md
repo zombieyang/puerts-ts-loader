@@ -18,7 +18,7 @@
 
 ## Getting Started
 
-1. Make sure that you have installed PuerTS using the UPM (Unity Package Manager), which can be done through OpenUPM or by cloning the repository and adding it from a file.
+1. Make sure that you have installed PuerTS using the UPM (Unity Package Manager), which can be done through OpenUPM or by cloning the repository and `add from file` in UPM window or just copy the `upm` directory to your `Packages/` directory(don't copy to `Assets/` directory plz).
 2. Load this package using the UPM same as how you loaded PuerTS. The OpenUPM package name for this package is **`com.tencent.puerts.ts-loader`**.
 3. Create a directory structure like this:
     
@@ -85,7 +85,7 @@ In **`ts-loader`**, every **`tsconfig`** and its associated directory and subdir
 
 All TypeScript files can be loaded using their path **relative to the tsconfig.json file** with the **`ExecuteModule`** function (e.g., as shown earlier with **`main.mts`**). If you create a TypeScript file with a path relative to the **`tsconfig`** like **`./lib/sub.mts`**, you can load it using **`ExecuteModule('./lib/sub.mts')`**.
 
-Across different **`tsconfig`** files, TypeScript files can be mutually loaded. For example, a TypeScript file relative to **`tsconfig`** A, **`./main.mts`**, can be loaded using **`import './sub.mts'`** relative to **`tsconfig`** B, regardless of the locations of **`tsconfig`** A and **`tsconfig`** B. However, you need to configure your **`tsconfig`** appropriately to get code completion for TypeScript files from other **`tsconfig`** files. Refer to **[Cross `tsconfig` References](https://chat.openai.com/?model=text-davinci-002-render-sha#cross-tsconfig-references)** for more details.
+Across different **`tsconfig`** files, TypeScript files can be mutually loaded. For example, a TypeScript file relative to **`tsconfig`** A, **`./main.mts`**, can be loaded using **`import './sub.mts'`** relative to **`tsconfig`** B, regardless of the locations of **`tsconfig`** A and **`tsconfig`** B. However, you need to configure your **`tsconfig`** appropriately to get code completion for TypeScript files from other **`tsconfig`** files. Refer to **[Explanation of Cross `tsconfig` References](#explanation-of-cross-tsconfig-references)** for more details.
 
 You can also place JavaScript files under the **`tsconfig`**, and they can be loaded in the same way as mentioned above. However, you need to add **`compilerOptions.allowJS = true`** to your **`tsconfig`** for this to work.
 
@@ -143,7 +143,7 @@ If you wish to publish TypeScript files managed by TSLoader in a different form,
 
 ## Acknowledgments
 
-Thanks for **[@throw-out](https://github.com/throw-out)** providing crucial support for source maps and ConsoleRedirect.
+Thanks for **[@throw-out](https://github.com/throw-out)** providing key support for source maps and ConsoleRedirect.
 
 -----
 
@@ -165,7 +165,7 @@ Thanks for **[@throw-out](https://github.com/throw-out)** providing crucial supp
 [我为什么要做TSLoader](https://zhuanlan.zhihu.com/p/614569767)
 
 ## 如何开始
-1. 确认你已通过upm方式安装好PuerTS，可以用openupm、也可以clone后add from file。
+1. 确认你已通过upm方式安装好PuerTS，可以用openupm、也可以clone后add from file、也可以下载本仓库后将upm目录丢到Packages下（请勿放在Assets里）。
 2. 通过upm方式加载本包，加载方式请与PuerTS保持一致。本包的openupm包名为`com.tencent.puerts.ts-loader`
 3. 创建这样的目录结构
   ```
