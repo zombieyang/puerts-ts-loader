@@ -1,4 +1,8 @@
 {
+    "files": [
+        "./external/axios.gen.mjs",
+        "./external/runtime.gen.mjs"
+    ],
     "compilerOptions": { 
         "target": "esnext",
         "module": "None",
@@ -11,8 +15,6 @@
         "composite": true,
         "outDir": "./out",
         "typeRoots": [
-            "../node_modules",
-            "../node_modules/@types",
         ],
     }
 }
