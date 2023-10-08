@@ -10,7 +10,7 @@ public class NodeModuleLoader: IResolvableLoader, ILoader, IBuiltinLoadedListene
     private string _nodeModulePath;
     public NodeModuleLoader(string nodeModulePath) 
     {
-        _nodeModulePath = PathHelper.normalize(Path.Combine(nodeModulePath, "node_modules")).Replace("\\", "/");
+        _nodeModulePath = PathHelper.normalize(Path.Combine(nodeModulePath, "node_modules").Replace("\\", "/"));
     }
     private Func<string, string, string> ResolvePackageFunc;
     private Func<string, string> LoadPackageFunc;
