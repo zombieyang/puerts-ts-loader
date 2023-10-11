@@ -126,17 +126,16 @@ namespace Puerts.TSLoader
   
         public virtual string ReadFile(string specifier, out string debugpath)
         {
+            debugpath = ""; // uncessary to set debugpath because sourcemap can support the vscode debug
 #if UNITY_EDITOR && !PUERTS_TSLOADER_DISABLE_EDITOR_FEATURE
             string filepath = specifier;
             if (filepath.EndsWith(".ts") || filepath.EndsWith(".mts")) 
             {
-                debugpath = filepath; 
                 return TSDirectoryCollector.EmitTSFile(filepath); 
                 
             } 
             else if (System.IO.File.Exists(filepath)) 
             {
-                debugpath = filepath;
                 return System.IO.File.ReadAllText(filepath);
                 
             }
@@ -147,7 +146,6 @@ namespace Puerts.TSLoader
             }
 #endif
             string content = null;
-            debugpath = "";
             if (LoaderChain.Count == 0) 
             {
                 content = puerDefaultLoader.ReadFile(specifier, out debugpath);
