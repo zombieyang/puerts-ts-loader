@@ -1,4 +1,4 @@
-
-console.log('hello world');
-export default 'hello world'
+import str from './base/lib.mjs'
+console.log(str);
+export default str
                 

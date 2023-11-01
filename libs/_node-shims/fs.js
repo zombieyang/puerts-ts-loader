@@ -1,6 +1,6 @@
 const fs = module.exports = {
     existsSync(path) {
-        return CS.System.IO.File.Exists(path);
+        return CS.System.IO.File.Exists(path) || CS.System.IO.Directory.Exists(path);
     },
     readFileSync(path) {
         return CS.System.IO.File.ReadAllText(path);
