@@ -33,6 +33,6 @@ function compile(saveTo: string, refs: string[], outputRelativePathCallback: (in
 }
 
 
-export default function ReleaseTS(saveTo: string, tsConfigBasePaths: string[], outputRelativePathCallback: (index: number) => string = ((index) => index.toString())): boolean {
+export default function releaseTS(saveTo: string, tsConfigBasePaths: string[], outputRelativePathCallback: (index: number) => string = ((index) => index.toString())): boolean {
     return compile(saveTo, tsConfigBasePaths, outputRelativePathCallback);
 }

@@ -17,7 +17,7 @@ const StringPrototypeLastIndexOf = (self, ...args) => String.prototype.lastIndex
 const StringPrototypeSlice = (self, ...args) => String.prototype.slice.apply(self, args)
 const StringPrototypeStartsWith = (self, ...args) => String.prototype.startsWith.apply(self, args)
 
-const { URL, fileURLToPath } = require('./url');
+const { URL, fileURLToPath } = require('../_node-shims/url');
 const ERR_INVALID_MODULE_SPECIFIER = function (...args) { return new Error('ERR_INVALID_MODULE_SPECIFIER:' + args.join(' ')) };
 const ERR_INVALID_PACKAGE_CONFIG = function (...args) { return new Error('ERR_INVALID_PACKAGE_CONFIG:' + args.join(' ')) };
 const ERR_INVALID_PACKAGE_TARGET = function (...args) { return new Error('ERR_INVALID_PACKAGE_TARGET:' + args.join(' ')) };

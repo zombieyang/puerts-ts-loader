@@ -13,4 +13,3 @@ node_modules
 .idea
 **/*/package-lock.json
 ts-monorepo-test
-puerts

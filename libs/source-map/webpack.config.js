@@ -20,15 +20,13 @@ module.exports = {
         new webpack.NormalModuleReplacementPlugin(
           /^path$/,
           function (resource) {
-            console.log(resource.request)
-            resource.request = __dirname + '/path.js'
+            resource.request = 'path-browserify'
           }
         ),
         new webpack.NormalModuleReplacementPlugin(
           /^fs$/,
           function (resource) {
-            console.log(resource.request)
-            resource.request = __dirname + '/fs.js'
+            resource.request = __dirname + '/../_node-shims/fs.js'
           }
         ),
     ],

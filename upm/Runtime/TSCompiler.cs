@@ -19,35 +19,12 @@ namespace Puerts.TSLoader
             var env = new JsEnv();
             env.UsingFunc<string, string>();
             env.UsingAction<string, string>();
-            env.Eval<Action<string, string>>(@"(function (tsRootPath, requirePath) { 
-                global.require = require('node:module').createRequire(requirePath + '/')
-                if (!require('node:fs').existsSync(requirePath + '/node_modules')) {
-                    throw new Error(`node_modules is not installed, please run 'npm install' in ${requirePath}`);
-                }
-                global.tsRootPath = tsRootPath
-            })")(tsRootPath, TSLoader.TSLoaderPath + "/Javascripts~");
 
-            emitTSFile = env.Eval<Func<string, string>>(@"
-                (function() {
-                    const Transpiler = require('./tsc').default;
-                    const transpiler = new Transpiler(global.tsRootPath);
-
-                    return function(tsFilePath) {
-                        return transpiler.transpile(tsFilePath).content;
-                    }
-                })()
-            ");
-
-            getSourceMap = env.Eval<Func<string, string>>(@"
-                (function() {
-                    const Transpiler = require('./tsc').default;
-                    const transpiler = new Transpiler(global.tsRootPath);
-
-                    return function(tsFilePath) {
-                        return transpiler.transpile(tsFilePath).sourceMap;
-                    }
-                })()
-            ");
+            JSObject compiler = env
+                .ExecuteModule("puerts/ts-loader/main.gen.mjs")
+                .Get<Func<string, JSObject>>("makeCompiler")(tsRootPath);
+            emitTSFile = compiler.Get<Func<string, string>>("emitTSFile");
+            getSourceMap = compiler.Get<Func<string, string>>(@"getSourceMap");
         }
 
         public string EmitTSFile(string tsPath) 

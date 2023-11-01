@@ -37,7 +37,6 @@ class PuerTSCTranspiler extends PuerBuiltinTranspiler {
         }
 
         compilerOptions.module = ModuleKind.ES2015;
-
         this.services = ts.createLanguageService({
             getScriptFileNames: () => []
                 .concat(glob.sync(normalize(tsRootPath + "/**/*.ts").replace(/\\/g, '/')) as any)

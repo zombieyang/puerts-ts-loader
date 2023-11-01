@@ -17,12 +17,6 @@ namespace Puerts.TSLoader
                     _env.UsingAction<string>();
                     _env.UsingFunc<int, string>();
                     _env.UsingAction<string, string[], Func<int, string>>();
-                    _env.Eval<Action<string>>(@"(function (requirePath) { 
-                        global.require = require('node:module').createRequire(requirePath + '/')
-                        if (!require('node:fs').existsSync(requirePath + '/node_modules')) {
-                            throw new Error(`node_modules is not installed, please run 'npm install' in ${requirePath}`);
-                        }
-                    })")(TSLoader.TSLoaderPath + "/Javascripts~");
                 } 
                 return _env;
             }
@@ -36,19 +30,7 @@ namespace Puerts.TSLoader
 
             if (_TSCRunner == null) 
             {
-                _TSCRunner = env.Eval<Action<string, string[], Func<int, string>>>(@" 
-                    (function() { 
-                        const releaseTS = require('./release').default;
-
-                        return function(saveTo, tsConfigPathCSArr, relativePathCallback) {
-                            const arr = [];
-                            for (let i = 0; i < tsConfigPathCSArr.Length; i++) {
-                                arr.push(tsConfigPathCSArr.get_Item(i));
-                            }
-                            return releaseTS(saveTo, arr, relativePathCallback ? (index) => relativePathCallback.Invoke(index) : null);
-                        }
-                    })()
-                ");
+                _TSCRunner = env.ExecuteModule(@"puerts/ts-loader/main.gen.mjs").Get<Action<string, string[], Func<int, string>>>("runReleaseTS");
             }
             _TSCRunner(saveTo, allPaths, outputRelativeCallback);
         }
