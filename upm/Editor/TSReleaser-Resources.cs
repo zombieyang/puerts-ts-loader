@@ -22,7 +22,7 @@ namespace Puerts.TSLoader
                         if (!require('node:fs').existsSync(requirePath + '/node_modules')) {
                             throw new Error(`node_modules is not installed, please run 'npm install' in ${requirePath}`);
                         }
-                    })")(TSLoader.TSLoaderPath);
+                    })")(TSLoader.TSLoaderPath + "/Javascripts~");
                 } 
                 return _env;
             }
