@@ -35,7 +35,7 @@ namespace Puerts.TSLoader
             _TSCRunner(saveTo, allPaths, outputRelativeCallback);
         }
 
-        [MenuItem("PuerTS/TSLoader/Release TS To Resources")]
+        [MenuItem(Puerts.Editor.Generator.UnityMenu.PUERTS_MENU_PREFIX + "/TSLoader/Release TS To Resources")]
         public static void ReleaseToResources()
         {
             var saveTo = Configure.GetCodeOutputDirectory();

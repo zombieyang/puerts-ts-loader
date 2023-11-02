@@ -22,21 +22,21 @@ namespace UnityEditor.Console
             get { return EditorPrefs.GetBool("Editor.ConsoleRedirect.Enable", true); }
             private set { EditorPrefs.SetBool("Editor.ConsoleRedirect.Enable", value); }
         }
-        [MenuItem("PuerTS/TSLoader/ConsoleRedirect Enable")]
+        [MenuItem(Puerts.Editor.Generator.UnityMenu.PUERTS_MENU_PREFIX + "/TSLoader/ConsoleRedirect Enable")]
         static void Enable()
         {
             enable = true;
             UnityEditor.Console.ConsoleHyperlink.Enable();
         }
-        [MenuItem("PuerTS/TSLoader/ConsoleRedirect Enable", true)]
+        [MenuItem(Puerts.Editor.Generator.UnityMenu.PUERTS_MENU_PREFIX + "/TSLoader/ConsoleRedirect Enable", true)]
         static bool EnableCheck() { return !enable; }
-        [MenuItem("PuerTS/TSLoader/ConsoleRedirect Disable")]
+        [MenuItem(Puerts.Editor.Generator.UnityMenu.PUERTS_MENU_PREFIX + "/TSLoader/ConsoleRedirect Disable")]
         static void Disable()
         {
             enable = false;
             UnityEditor.Console.ConsoleHyperlink.Disable();
         }
-        [MenuItem("PuerTS/TSLoader/ConsoleRedirect Disable", true)]
+        [MenuItem(Puerts.Editor.Generator.UnityMenu.PUERTS_MENU_PREFIX + "/TSLoader/ConsoleRedirect Disable", true)]
         static bool DisableCheck() { return enable; }
 
 
