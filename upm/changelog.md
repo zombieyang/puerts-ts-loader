@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 you can get the english version change log at [Github Release](https://github.com/Tencent/puerts/releases)
 
+## [2.0.3] - 2023-11-02
+1. compat with core@2.0.3
+2. make basic feature available without node.js support(except NodeModulesLoader). Remove directory `Javascript~`
+3. move the tools from `PuerTS` to `Tools/PuerTS`
+
 ## [2.0.2] - 2023-09-07
 1. compat with core@2.0.2
 2. upgrade ConsoleRedirect to compat Unity2022
