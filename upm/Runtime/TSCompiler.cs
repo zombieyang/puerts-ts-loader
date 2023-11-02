@@ -11,11 +11,6 @@ namespace Puerts.TSLoader
         Func<string, string> getSourceMap;
         public TSCompiler(string tsRootPath)
         {
-            if (!Directory.Exists(TSLoader.TSLoaderPath)) 
-            {
-                throw new Exception("Please set TSLoader.TSLoaderPath as the installed path of puerts.ts-loader in your project");
-            }
-                
             var env = new JsEnv();
             env.UsingFunc<string, string>();
             env.UsingAction<string, string>();

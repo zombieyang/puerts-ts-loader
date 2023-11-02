@@ -8,8 +8,6 @@ namespace Puerts.TSLoader
 {
     public class TSLoader : Puerts.ILoader, Puerts.IResolvableLoader, Puerts.IModuleChecker, IBuiltinLoadedListener
     {
-        public static string TSLoaderPath = Path.GetFullPath("Packages/com.tencent.puerts.ts-loader");
-
         Puerts.DefaultLoader puerDefaultLoader = null;
         List<Puerts.ILoader> LoaderChain = new List<Puerts.ILoader>();
 
