@@ -20,7 +20,7 @@ module.exports = {
     new webpack.NormalModuleReplacementPlugin(
       /^path$/,
       function (resource) {
-        resource.request = 'path-browserify' // https://github.com/Richienb/node-polyfill-webpack-plugin
+        resource.request = __dirname + '/../_node-shims/path.js'
       }
     ),
     new webpack.NormalModuleReplacementPlugin(

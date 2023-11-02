@@ -20,7 +20,7 @@ module.exports = {
         new webpack.NormalModuleReplacementPlugin(
           /^path$/,
           function (resource) {
-            resource.request = 'path-browserify'
+            resource.request = __dirname + '/../_node-shims/path.js'
           }
         ),
         new webpack.NormalModuleReplacementPlugin(
