@@ -4,6 +4,7 @@ import * as ts from "typescript";
 
 function compile(saveTo: string, refs: string[], outputRelativePathCallback: (index: number) => string): boolean {
     let tsconfigIndex = 0;
+    const errMsgs: string[] = [];
     const builder = ts.createSolutionBuilder(
         ts.createSolutionBuilderHost(Object.assign({}, ts.sys, {
             readFile(path: string) {
@@ -26,10 +27,16 @@ function compile(saveTo: string, refs: string[], outputRelativePathCallback: (in
                 config.module = ts.ModuleKind.ES2015
             }
             return ts.createEmitAndSemanticDiagnosticsBuilderProgram.apply(ts, args);
-        }, function (err) { console.warn(JSON.stringify(err.messageText)) }),
+        }, function (err) {
+            errMsgs.push(err.messageText.toString()) 
+         }),
         ["/puer-mock/tsconfig.json"], {}
     );
-    return builder.build() == 0;
+    const res = builder.build() == 0
+    if (!res) errMsgs.forEach(console.error)
+    else errMsgs.forEach(console.warn);
+
+    return res;
 }
 
 
