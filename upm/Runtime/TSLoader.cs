@@ -173,5 +173,9 @@ import '../puerts-source-map-support.mjs'
 #endif
             return content;
         }
+
+        public static byte[] GetBytes(string str) {
+            return System.Text.Encoding.UTF8.GetBytes(str);
+        }
     }
 }

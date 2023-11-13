@@ -1,9 +1,41 @@
+let fdIndex = 0;
+const openedFile = {};
+
 const fs = module.exports = {
-    existsSync(path) {
-        return CS.System.IO.File.Exists(path) || CS.System.IO.Directory.Exists(path);
+    mkdirSync(p) {
+        CS.System.IO.Directory.CreateDirectory(p)
     },
-    readFileSync(path) {
-        return CS.System.IO.File.ReadAllText(path);
+    openSync(p, mode) {
+        if (mode != 'w') throw new Error(`filemode ${mode} is not implemented yet`);
+        const fd = ++fdIndex;
+        openedFile[fd] = CS.System.IO.File.Open(p, CS.System.IO.FileMode.OpenOrCreate);
+        return fd;
+    },
+    writeSync(fd, str, position) {
+        if (typeof str != 'string') throw new Error(`only write string is supported`)
+        const f = openedFile[fd];
+        const buffer = CS.Puerts.TSLoader.TSLoader.GetBytes(str);
+        f.Write(buffer, position || f.Current, buffer.Length);
+    },
+    closeSync(fd) {
+        openedFile[fd].Close();
+        openedFile[fd].Dispose();
+        delete openedFile[fd];
+    },
+    existsSync(p) {
+        return CS.System.IO.File.Exists(p) || CS.System.IO.Directory.Exists(p);
+    },
+    readFileSync(p) {
+        if (p.indexOf('puer://') == 0) {
+            const filepath = 'puerts' + p.substring(7);
+            if (puer.fileExists(filepath))
+                return puer.loadFile(filepath).content;
+            else
+                throw new Error('file not found: ' + filepath);
+
+        } else {
+            return CS.System.IO.File.ReadAllText(p);
+        }
     },
     realpathSync(path) {
         return path
@@ -32,6 +64,9 @@ const fs = module.exports = {
         }
         
         return {
+            isFile() {
+                return CS.System.IO.File.Exists(p)
+            },
             isDirectory() {
                 return CS.System.IO.Directory.Exists(p)
             },

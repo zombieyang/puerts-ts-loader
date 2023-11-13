@@ -4,6 +4,9 @@ module.exports = {
   mode: 'production',
 
   target: 'es2022',
+  node: {
+    __dirname: false
+  },
   entry: {
     'main': './entry.ts'
   },

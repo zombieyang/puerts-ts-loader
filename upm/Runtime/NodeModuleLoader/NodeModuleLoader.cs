@@ -17,9 +17,9 @@ public class NodeModuleLoader: IResolvableLoader, ILoader, IBuiltinLoadedListene
 	private bool isBuiltinLoaded = false;
     public void OnBuiltinLoaded(JsEnv env)
     {
+        ResolvePackageFunc = env.ExecuteModule<Func<string, string, string>>("puerts/ts-loader/node-resolve.mjs", "packageResolve");
+        LoadPackageFunc = env.ExecuteModule<Func<string, string>>("puerts/ts-loader/node-resolve.mjs", "packageLoad");
 		isBuiltinLoaded = true;
-        ResolvePackageFunc = env.ExecuteModule<Func<string, string, string>>("nodemodule-loader/resolve.mjs", "packageResolve");
-        LoadPackageFunc = env.ExecuteModule<Func<string, string>>("nodemodule-loader/resolve.mjs", "packageLoad");
     }
 
     public string Resolve(string specifier, string referrer)

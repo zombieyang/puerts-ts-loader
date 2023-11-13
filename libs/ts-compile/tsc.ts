@@ -2,7 +2,7 @@ import { existsSync, readFileSync, statSync } from "fs";
 import { glob } from "glob";
 import { join, normalize } from "path";
 import ts, { ModuleKind } from "typescript";
-import PuerBuiltinTranspiler from "./base";
+import PuerBuiltinTranspiler, { hostGetDefaultLibMixin } from "./base";
 
 const DEFAULT_TS_CONFIG = {
     "target": ts.ScriptTarget.ESNext,
@@ -37,7 +37,7 @@ class PuerTSCTranspiler extends PuerBuiltinTranspiler {
         }
 
         compilerOptions.module = ModuleKind.ES2015;
-        this.services = ts.createLanguageService({
+        const host: ts.LanguageServiceHost = {
             getScriptFileNames: () => []
                 .concat(glob.sync(normalize(tsRootPath + "/**/*.ts").replace(/\\/g, '/')) as any)
                 .concat(glob.sync(normalize(tsRootPath + "/**/*.mts").replace(/\\/g, '/')) as any),
@@ -50,15 +50,12 @@ class PuerTSCTranspiler extends PuerBuiltinTranspiler {
                 return ts.ScriptSnapshot.fromString(readFileSync(fileName).toString());
             },
             getCurrentDirectory: () => process.cwd(),
-            getDefaultLibFileName: options => ts.getDefaultLibFilePath(options),
+            getDefaultLibFileName: () => '', // Object.assign in next statement.
             fileExists: ts.sys.fileExists,
             readFile: ts.sys.readFile,
-            // getCustomTransformers: () => {
-            //     return {
-            //         before: [transformer]
-            //     }
-            // }
-        }, ts.createDocumentRegistry());
+        }
+        Object.assign(host, hostGetDefaultLibMixin);
+        this.services = ts.createLanguageService(host, ts.createDocumentRegistry());
     }
 
     transpile(filepath: string): { content: string, sourceMap: string } {

@@ -1,7 +1,7 @@
 
 {
     "compilerOptions": { 
-        "target": "esnext",
+        "target": "ES2022",
         "module": "ES2015",
         "jsx": "react",
         "inlineSourceMap": true,
