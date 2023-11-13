@@ -12,7 +12,7 @@
       "depth": 0,
       "source": "local",
       "dependencies": {
-        "com.tencent.puerts.core": "2.0.2"
+        "com.tencent.puerts.core": "2.0.3"
       }
     },
     "com.unity.2d.sprite": {
