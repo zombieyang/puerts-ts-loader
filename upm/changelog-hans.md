@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 you can get the english version change log at [Github Release](https://github.com/Tencent/puerts/releases)
 
+## [2.0.4] - 2023-01-09
+1. 兼容 core@2.0.4
+2. 修复release JS时没出来的问题
+3. tsc错误信息现在会error而不是warning
+
 ## [2.0.3] - 2023-11-02
 1. 兼容 core@2.0.3
 2. 基础功能脱离对Node的依赖（NodeModulesLoader除外）移除`Javascript~`目录
