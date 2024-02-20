@@ -6,7 +6,7 @@
     "./entry.ts"
   ],
   "compilerOptions": {
-    "outDir": "../../upm/Javascripts~/",                                   /* Specify an output folder for all emitted files. */
+    // "outDir": "../../upm/Javascripts~/",                                   /* Specify an output folder for all emitted files. */
     /* Visit https://aka.ms/tsconfig to read more about this file */
     /* Projects */
     // "incremental": true,                              /* Save .tsbuildinfo files to allow for incremental compilation of projects. */

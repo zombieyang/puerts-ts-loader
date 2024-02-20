@@ -6,8 +6,8 @@ module.exports = {
     target: 'web',
     entry: './resolve.js',
     output: {
-        filename: 'resolve.mjs',
-        path: join(__dirname, '../upm/Runtime/NodeModuleLoader/Typescripts/nodemodule-loader/'),
+        filename: 'node-resolve.mjs',
+        path: join(__dirname, '../../upm/Editor/Resources/puerts/ts-loader/'),
         library: {
             type: 'module'
         }
