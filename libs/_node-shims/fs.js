@@ -15,7 +15,7 @@ const fs = module.exports = {
         if (typeof str != 'string') throw new Error(`only write string is supported`)
         const f = openedFile[fd];
         const buffer = CS.Puerts.TSLoader.TSLoader.GetBytes(str);
-        f.Write(buffer, position || f.Current, buffer.Length);
+        f.Write(buffer, position || f.Current || 0, buffer.Length);
     },
     closeSync(fd) {
         openedFile[fd].Close();
