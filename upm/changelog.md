@@ -6,7 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 you can get the english version change log at [Github Release](https://github.com/Tencent/puerts/releases)
 
-## [2.0.4] - 2023-01-09
+## [2.0.5] - 2024-05-07
+1. compat core@2.0.5
+2. fix release JS failing bug in Windows #6.
+3. fix the incorrect source-map path in Windows #7.
+
+## [2.0.4] - 2024-01-09
 1. compat core@2.0.4
 2. fix release JS failing bug.
 3. the error message of tsc will error instead of warning to console.

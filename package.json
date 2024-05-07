@@ -1,7 +1,7 @@
 {
     "name": "@puerts/ts-loader",
     "displayName": "Puerts TS loader",
-    "version": "2.0.4",
+    "version": "2.0.5",
     "description": "use typescript with more joy for PuerTS",
     "scripts": {
         "build": "cd libs/node-resolve && webpack -c webpack.config.js && cd ../source-map && webpack -c webpack.config.js && cd ../ts-compile && webpack -c webpack.config.js"
