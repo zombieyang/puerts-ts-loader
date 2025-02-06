@@ -6,10 +6,10 @@ using System.IO;
 
 namespace Puerts.TSLoader
 {
-    public class TSLoader : Puerts.ILoader, Puerts.IResolvableLoader, Puerts.IModuleChecker, IBuiltinLoadedListener
+    public class TSLoader : ILoader, IResolvableLoader, IModuleChecker, IBuiltinLoadedListener
     {
-        Puerts.DefaultLoader puerDefaultLoader = null;
-        List<Puerts.ILoader> LoaderChain = new List<Puerts.ILoader>();
+        DefaultLoader puerDefaultLoader = null;
+        List<ILoader> LoaderChain = new();
 
         public void OnBuiltinLoaded(JsEnv env)
         {
@@ -21,7 +21,7 @@ namespace Puerts.TSLoader
                 }
                 catch(Exception e)
                 {
-                    UnityEngine.Debug.LogException(e);
+                    Debug.LogException(e);
                 }
             }
         }
@@ -41,7 +41,7 @@ namespace Puerts.TSLoader
 #endif
         }
 
-        public void UseRuntimeLoader(Puerts.ILoader loader)
+        public void UseRuntimeLoader(ILoader loader)
         {
             LoaderChain.Add(loader);
         }
@@ -76,7 +76,7 @@ namespace Puerts.TSLoader
             if (LoaderChain.Count == 0) 
             {
                 // UnityEngine.Debug.Log(specifier + " use default loader");
-                if (puerDefaultLoader == null) puerDefaultLoader = new Puerts.DefaultLoader();
+                if (puerDefaultLoader == null) puerDefaultLoader = new DefaultLoader();
                 if (PathHelper.IsRelative(specifier))
                 {
                     specifier = PathHelper.normalize(PathHelper.Dirname(referrer) + "/" + specifier);
@@ -93,7 +93,7 @@ namespace Puerts.TSLoader
                         var resolveResult = (loader as IResolvableLoader).Resolve(specifier, referrer);
                         lastResolveLoader = loader;
                         lastResolveSpecifier = resolveResult;
-                        if (!String.IsNullOrEmpty(resolveResult)) {
+                        if (!string.IsNullOrEmpty(resolveResult)) {
                             return resolveResult;
                         }
                     } 
@@ -132,9 +132,9 @@ namespace Puerts.TSLoader
                 return TSDirectoryCollector.EmitTSFile(filepath); 
                 
             } 
-            else if (System.IO.File.Exists(filepath)) 
+            else if (File.Exists(filepath)) 
             {
-                return System.IO.File.ReadAllText(filepath);
+                return File.ReadAllText(filepath);
                 
             }
 #else

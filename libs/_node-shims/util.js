@@ -1,0 +1,1 @@
+export { TextEncoder, TextDecoder } from "@zxing/text-encoding"

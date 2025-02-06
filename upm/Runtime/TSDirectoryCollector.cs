@@ -9,7 +9,9 @@ namespace Puerts.TSLoader
 {
     public class TSDirectoryCollector
     {
-        protected static Dictionary<string, TSCompiler> tsCompilers = new Dictionary<string, TSCompiler>();
+        protected static string compilerJSName = "puerts/ts-loader/amaro.gen.mjs";
+        // protected static string compilerJSName = "puerts/ts-loader/main.gen.mjs";
+        protected static Dictionary<string, TSCompiler> tsCompilers = new();
 
         private class Utils {
             internal static string[] GetMaybeRealSpecifier(string specifier) 
@@ -68,7 +70,7 @@ namespace Puerts.TSLoader
         public static void AddTSCompiler(string absPath)
         {
             if (tsCompilers.ContainsKey(absPath)) return;
-            tsCompilers[absPath] = new TSCompiler(absPath);
+            tsCompilers[absPath] = new TSCompiler(absPath, compilerJSName);
         }
 
         public static string TryGetFullTSPath(string originSpecifier) 
