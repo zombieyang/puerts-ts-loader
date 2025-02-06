@@ -18,10 +18,10 @@ namespace Puerts.TSLoader
                     _env.UsingFunc<int, string>();
                     _env.UsingAction<string, string[], Func<int, string>>();
                 } 
-                return _env;
+                return _env; 
             }
-        }
-
+        } 
+ 
         protected static Action<string, string[], Func<int, string>> _TSCRunner;
         public static void ReleaseAllTS(string saveTo, Func<int, string> outputRelativeCallback = null) 
         {
@@ -30,10 +30,10 @@ namespace Puerts.TSLoader
 
             if (_TSCRunner == null) 
             {
-                _TSCRunner = env.ExecuteModule(@"puerts/ts-loader/main.gen.mjs").Get<Action<string, string[], Func<int, string>>>("runReleaseTS");
+                _TSCRunner = env.ExecuteModule(@"puerts/ts-loader/amaro.gen.mjs").Get<Action<string, string[], Func<int, string>>>("runReleaseTS");
             }
             _TSCRunner(saveTo, allPaths, outputRelativeCallback);
-        }
+        } 
 
         [MenuItem(Puerts.Editor.Generator.UnityMenu.PUERTS_MENU_PREFIX + "/TSLoader/Release TS To Resources")]
         public static void ReleaseToResources()

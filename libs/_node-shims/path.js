@@ -13,5 +13,8 @@ module.exports = Object.assign({}, browserify, {
     dirname(path, ...args) {
         path = path.replace(/\\/g, '/');
         return browserify.dirname(path, ...args);
+    },
+    relative(from, to) {
+        return CS.System.IO.Path.GetRelativePath(from, to)
     }
 })

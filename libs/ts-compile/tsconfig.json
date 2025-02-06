@@ -1,7 +1,6 @@
 {
   "include": [
     "./base.ts",
-    "./tsc.ts",
     "./release.ts",
     "./entry.ts"
   ],

@@ -1,10 +1,11 @@
 let fdIndex = 0;
 const openedFile = {};
 
+async function waitNextTick() {
+    await new Promise(resolve => setTimeout(resolve, 1));   //wait next tick
+}
+
 const fs = module.exports = {
-    mkdirSync(p) {
-        CS.System.IO.Directory.CreateDirectory(p)
-    },
     openSync(p, mode) {
         if (mode != 'w') throw new Error(`filemode ${mode} is not implemented yet`);
         const fd = ++fdIndex;
@@ -37,25 +38,6 @@ const fs = module.exports = {
             return CS.System.IO.File.ReadAllText(p);
         }
     },
-    realpathSync(path) {
-        return path
-    },
-    readdirSync(dir) {
-        const ret = [];
-        let dirs, files;
-        try {
-            dirs = CS.System.IO.Directory.GetDirectories(dir);
-        } catch (e) {
-            if (e.message.indexOf('Could not find a part of the path') != -1) {
-                e.code = "ENOTDIR"
-            }
-            throw e;
-        }
-        files = CS.System.IO.Directory.GetFiles(dir);
-        for (let i = 0; i < dirs.Length; i++) ret.push(dirs.get_Item(i))
-        for (let i = 0; i < files.Length; i++) ret.push(files.get_Item(i))
-        return ret.map(r => r.replace(/\\/g, '/').replace(dir + '/', ''));
-    },
     lstatSync(p) {
         if (!fs.existsSync(p)) {
             const e = new Error('file not exists: ' + p);
@@ -79,5 +61,118 @@ const fs = module.exports = {
     },
     statSync(p) {
         return fs.lstatSync(p);
-    }
+    },
+    
+    async delete(path) {
+        await waitNextTick();
+        this.deleteSync(path);
+    },
+    deleteSync(path) {
+        if (CS.System.IO.File.Exists(path)) {
+            CS.System.IO.File.Delete(path);
+        }
+        else if (CS.System.IO.Directory.Exists(path)) {
+            CS.System.IO.Directory.Delete(path, true);
+        }
+    },
+    readdirSync(dirPath) {
+        let results = [];
+        if (CS.System.IO.Directory.Exists(dirPath)) {
+            this._currentDirectory = dirPath;
+            let dir = new CS.System.IO.DirectoryInfo(dirPath),
+                dirInfos = dir.GetDirectories(),
+                fileInfos = dir.GetFiles();
+            for (let i = 0; i < dirInfos.Length; i++) {
+                // results.push({
+                //     name: dirInfos.get_Item(i).Name,
+                //     isFile: false,
+                //     isDirectory: true,
+                //     isSymlink: false
+                // });
+                results.push(dirInfos.get_Item(i).Name)
+            }
+            for (let i = 0; i < fileInfos.Length; i++) {
+                // results.push({
+                //     name: fileInfos.get_Item(i).Name,
+                //     isFile: true,
+                //     isDirectory: false,
+                //     isSymlink: false
+                // });
+                results.push(fileInfos.get_Item(i).Name)
+            }
+        }
+        return results;
+    },
+    async readFile(filePath, encoding) {
+        await waitNextTick();
+        return this.readFileSync(filePath, encoding);
+    },
+    async writeFile(filePath, fileText) {
+        await waitNextTick();
+        this.writeFileSync(filePath, fileText);
+    },
+    writeFileSync(filePath, fileText) {
+        CS.System.IO.File.WriteAllText(filePath, fileText);
+    },
+    async mkdir(dirPath) {
+        this.mkdirSync(dirPath);
+    },
+    mkdirSync(dirPath) {
+        CS.System.IO.Directory.CreateDirectory(dirPath);
+    },
+    async move(srcPath, destPath) {
+        await waitNextTick();
+        this.moveSync(srcPath, destPath);
+    },
+    moveSync(srcPath, destPath) {
+        if (CS.System.IO.File.Exists(srcPath)) {
+            CS.System.IO.File.Move(srcPath, destPath);
+        }
+        else if (CS.System.IO.Directory.Exists(srcPath)) {
+            CS.System.IO.Directory.Move(srcPath, destPath);
+        }
+    },
+    async copy(srcPath, destPath) {
+        await waitNextTick();
+        this.copySync(srcPath, destPath);
+    },
+    copySync(srcPath, destPath) {
+        if (CS.System.IO.File.Exists(srcPath)) {
+            CS.System.IO.File.Copy(srcPath, destPath);
+        }
+        else if (CS.System.IO.Directory.Exists(srcPath)) {
+            let dir = new CS.System.IO.DirectoryInfo(srcPath),
+                dirInfos = dir.GetDirectories(),
+                fileInfos = dir.GetFiles();
+            for (let i = 0; i < fileInfos.Length; i++) {
+                let name = fileInfos.get_Item(i).Name;
+                this.copySync(CS.System.IO.Path.Combine(srcPath, name), CS.System.IO.Path.Combine(destPath, name));
+            }
+            for (let i = 0; i < dirInfos.Length; i++) {
+                let name = dirInfos.get_Item(i).Name;
+                this.copySync(CS.System.IO.Path.Combine(srcPath, name), CS.System.IO.Path.Combine(destPath, name));
+            }
+        }
+    },
+    async fileExists(filePath) {
+        await waitNextTick();
+        return this.fileExistsSync(filePath);
+    },
+    fileExistsSync(filePath) {
+        return CS.System.IO.File.Exists(filePath);
+    },
+    async directoryExists(dirPath) {
+        await waitNextTick();
+        return this.directoryExistsSync(dirPath);
+    },
+    directoryExistsSync(dirPath) {
+        return CS.System.IO.Directory.Exists(dirPath);
+    },
+    realpathSync(path) {
+        return CS.System.IO.Path.GetFullPath(path);
+    },
+    getCurrentDirectory() {
+        return '';
+    },
+    
 }
