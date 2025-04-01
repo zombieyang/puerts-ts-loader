@@ -33,7 +33,7 @@
 4. Drag the **`Script.cs`** into your scene. In the **`Start()`** method of **`Script.cs`**, use the following code to see the effect:
     
     ```csharp
-    var env = new Puerts.JsEnv(new Puerts.TSLoader());
+    var env = new Puerts.JsEnv(new Puerts.TSLoader.TSLoader());
     env.ExecuteModule("main.mts");
     ```
     
@@ -177,7 +177,7 @@ Thanks for **[@throw-out](https://github.com/throw-out)** providing key support 
   ```
 5. 将Script.cs拖入场景，在Script.cs的Start()使用如下代码即可看到效果
 ```
-var env = new Puerts.JsEnv(new Puerts.TSLoader());
+var env = new Puerts.JsEnv(new Puerts.TSLoader.TSLoader());
 env.ExecuteModule("main.mts");
 ```
 > 如果PuerTS本体不使用UPM安装，可以自行clone ts-loader项目并将upm目录添加至Unity。且注意PuerTS本体需要用Node.js版
